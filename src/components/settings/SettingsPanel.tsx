@@ -1,10 +1,11 @@
 import { ClockSettingsTab } from '@/components/settings/ClockSettingsTab'
 import { DateSettingsTab } from '@/components/settings/DateSettingsTab'
+import { BackgroundSettingsTab } from '@/components/settings/BackgroundSettingsTab'
 import type { Settings } from '@/types/settings'
 import { Icon } from '@phosphor-icons/react'
 import { CalendarIcon } from '@phosphor-icons/react/dist/icons/Calendar'
 import { ClockIcon } from '@phosphor-icons/react/dist/icons/Clock'
-import { PaletteIcon } from '@phosphor-icons/react/dist/icons/Palette'
+import { ImageIcon } from '@phosphor-icons/react/dist/icons/Image'
 import { XIcon } from '@phosphor-icons/react/dist/icons/X'
 import { useEffect, useRef, useState } from 'preact/hooks'
 
@@ -13,9 +14,10 @@ type SettingsPanelProps = {
   onClose: () => void
   settings: Settings
   onSettingsChange: (settings: Settings) => void
+  onSkipToNext?: () => void
 }
 
-type TabId = 'clock' | 'date' | 'appearance'
+type TabId = 'clock' | 'date' | 'background'
 
 type Tab = {
   id: TabId
@@ -26,7 +28,7 @@ type Tab = {
 const tabs: Tab[] = [
   { id: 'clock', label: 'Clock', icon: ClockIcon },
   { id: 'date', label: 'Date', icon: CalendarIcon },
-  { id: 'appearance', label: 'Appearance', icon: PaletteIcon },
+  { id: 'background', label: 'Background', icon: ImageIcon },
 ]
 
 export function SettingsPanel({
@@ -34,6 +36,7 @@ export function SettingsPanel({
   onClose,
   settings,
   onSettingsChange,
+  onSkipToNext,
 }: SettingsPanelProps) {
   const [activeTab, setActiveTab] = useState<TabId>('clock')
   const panelRef = useRef<HTMLDivElement>(null)
@@ -70,7 +73,7 @@ export function SettingsPanel({
       >
         {/* Header */}
         <div class="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-          <h2 class="text-xl font-semibold text-white">Settings</h2>
+          <h2 class="text-xl font-semibold text-white">The Homescreen</h2>
           <button
             onClick={onClose}
             class="p-1.5 text-gray-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
@@ -123,21 +126,17 @@ export function SettingsPanel({
                 }
               />
             )}
-            {activeTab === 'appearance' && (
-              <div class="flex flex-col items-center justify-center h-full text-center">
-                <PaletteIcon
-                  size={48}
-                  class="text-gray-600 mb-4"
-                  weight="duotone"
-                />
-                <h3 class="text-lg font-medium text-gray-400 mb-2">
-                  Appearance Settings
-                </h3>
-                <p class="text-sm text-gray-500">
-                  Customize the look and feel of your homescreen
-                </p>
-                <p class="text-xs text-gray-600 mt-4">Coming soon...</p>
-              </div>
+            {activeTab === 'background' && (
+              <BackgroundSettingsTab
+                settings={settings.background}
+                onChange={backgroundSettings =>
+                  onSettingsChange({
+                    ...settings,
+                    background: backgroundSettings,
+                  })
+                }
+                {...(onSkipToNext ? { onSkipToNext } : {})}
+              />
             )}
           </div>
         </div>

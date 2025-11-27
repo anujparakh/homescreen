@@ -19,14 +19,24 @@ export const DEFAULT_SETTINGS: Settings = {
     shortMonthName: true,
     showYear: false,
   },
+  background: {
+    enabled: true,
+    source: 'chromecast',
+    rotationInterval: 1800000,
+    showAttribution: true,
+  },
 }
 
 export function loadSettings(): Settings {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
-      const parsed = JSON.parse(stored) as Settings
-      return { ...DEFAULT_SETTINGS, ...parsed }
+      const parsed = JSON.parse(stored) as Partial<Settings>
+      return {
+        clock: { ...DEFAULT_SETTINGS.clock, ...parsed.clock },
+        date: { ...DEFAULT_SETTINGS.date, ...parsed.date },
+        background: { ...DEFAULT_SETTINGS.background, ...parsed.background },
+      }
     }
   } catch (error) {
     console.error('Failed to load settings from localStorage:', error)
