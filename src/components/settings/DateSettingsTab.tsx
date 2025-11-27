@@ -1,15 +1,13 @@
 import type { DateSettings } from '@/types/settings'
-import { Toggle } from '@/components/Toggle'
+import { Toggle } from '@/components/primitives/Toggle'
+import { Select } from '@/components/primitives/Select'
 
 type DateSettingsTabProps = {
   settings: DateSettings
   onChange: (settings: DateSettings) => void
 }
 
-export function DateSettingsTab({
-  settings,
-  onChange,
-}: DateSettingsTabProps) {
+export function DateSettingsTab({ settings, onChange }: DateSettingsTabProps) {
   const updateSetting = <K extends keyof DateSettings>(
     key: K,
     value: DateSettings[K]
@@ -19,7 +17,7 @@ export function DateSettingsTab({
 
   return (
     <div class="space-y-4">
-      {/* Show Date */}
+      {/* Date */}
       <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
         <label class="text-gray-200 font-medium">Show Date</label>
         <Toggle
@@ -30,9 +28,9 @@ export function DateSettingsTab({
         />
       </div>
 
-      {/* Show Day of Week */}
+      {/* Day of Week */}
       <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
-        <label class="text-gray-200 font-medium">Show Day of Week</label>
+        <label class="text-gray-200 font-medium">Day of Week</label>
         <Toggle
           checked={settings.showDayOfWeek}
           onChange={checked => updateSetting('showDayOfWeek', checked)}
@@ -41,9 +39,9 @@ export function DateSettingsTab({
         />
       </div>
 
-      {/* Show Month and Day */}
+      {/* Month and Day */}
       <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
-        <label class="text-gray-200 font-medium">Show Month & Day</label>
+        <label class="text-gray-200 font-medium">Month & Day</label>
         <Toggle
           checked={settings.showMonthAndDay}
           onChange={checked => updateSetting('showMonthAndDay', checked)}
@@ -53,19 +51,22 @@ export function DateSettingsTab({
       </div>
 
       {/* Short Month Name */}
-      <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
+      <div class="px-4 py-2 bg-slate-900 rounded-lg border border-slate-700 flex items-center justify-between">
         <label class="text-gray-200 font-medium">Month Format</label>
-        <Toggle
-          checked={settings.shortMonthName}
-          onChange={checked => updateSetting('shortMonthName', checked)}
-          leftLabel="Long"
-          rightLabel="Short"
+        <Select
+          value={settings.shortMonthName ? 'short' : 'long'}
+          onChange={value => updateSetting('shortMonthName', value === 'short')}
+          options={[
+            { value: 'long', label: 'Long' },
+            { value: 'short', label: 'Short' },
+          ]}
+          mode="pills"
         />
       </div>
 
-      {/* Show Year */}
+      {/* Year */}
       <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
-        <label class="text-gray-200 font-medium">Show Year</label>
+        <label class="text-gray-200 font-medium">Year</label>
         <Toggle
           checked={settings.showYear}
           onChange={checked => updateSetting('showYear', checked)}

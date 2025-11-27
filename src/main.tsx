@@ -1,6 +1,6 @@
 import { render } from 'preact'
 import { App } from '@/app'
-import { SettingsProvider } from '@/components/SettingsProvider'
+import { SettingsProvider } from '@/components/settings/SettingsProvider'
 // @ts-ignore: allow side-effect import of CSS without type declarations
 import '@/index.css'
 

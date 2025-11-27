@@ -1,5 +1,6 @@
 import type { ClockSettings } from '@/types/settings'
-import { Toggle } from '@/components/Toggle'
+import { Toggle } from '@/components/primitives/Toggle'
+import { Select } from '@/components/primitives/Select'
 
 type ClockSettingsTabProps = {
   settings: ClockSettings
@@ -32,7 +33,7 @@ export function ClockSettingsTab({
 
       {/* 24 Hour Format */}
       <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
-        <label class="text-gray-200 font-medium">24-Hour Format</label>
+        <label class="text-gray-200 font-medium">Time Format</label>
         <Toggle
           checked={settings.use24HourFormat}
           onChange={checked => updateSetting('use24HourFormat', checked)}
@@ -53,37 +54,34 @@ export function ClockSettingsTab({
       </div>
 
       {/* Size */}
-      <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
+      <div class="px-4 py-2 bg-slate-900 rounded-lg border border-slate-700 flex items-center justify-between">
         <label class="text-gray-200 font-medium">Clock Size</label>
-        <Toggle
-          checked={settings.size === 'large'}
-          onChange={checked =>
-            updateSetting('size', checked ? 'large' : 'small')
-          }
-          leftLabel="Small"
-          rightLabel="Large"
+        <Select
+          value={settings.size}
+          onChange={value => updateSetting('size', value)}
+          options={[
+            { value: 'small', label: 'Small' },
+            { value: 'large', label: 'Large' },
+          ]}
+          mode="pills"
         />
       </div>
 
       {/* Alignment */}
-      <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
+      <div class="space-y-2 py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
         <label class="text-gray-200 font-medium">Alignment</label>
-        <select
+        <Select
           value={settings.alignment}
-          onChange={e =>
-            updateSetting(
-              'alignment',
-              e.currentTarget.value as ClockSettings['alignment']
-            )
-          }
-          class="bg-slate-700 text-white border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-        >
-          <option value="top-left">Top Left</option>
-          <option value="top-right">Top Right</option>
-          <option value="center">Center</option>
-          <option value="bottom-left">Bottom Left</option>
-          <option value="bottom-right">Bottom Right</option>
-        </select>
+          onChange={value => updateSetting('alignment', value)}
+          options={[
+            { value: 'top-left', label: 'Top Left' },
+            { value: 'top-right', label: 'Top Right' },
+            { value: 'center', label: 'Center' },
+            { value: 'bottom-left', label: 'Bottom Left' },
+            { value: 'bottom-right', label: 'Bottom Right' },
+          ]}
+          mode="pills"
+        />
       </div>
     </div>
   )

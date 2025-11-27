@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from 'preact/hooks'
-import { X } from '@phosphor-icons/react/dist/icons/X'
-import { Clock } from '@phosphor-icons/react/dist/icons/Clock'
-import { Calendar } from '@phosphor-icons/react/dist/icons/Calendar'
-import { Palette } from '@phosphor-icons/react/dist/icons/Palette'
+import { ClockSettingsTab } from '@/components/settings/ClockSettingsTab'
+import { DateSettingsTab } from '@/components/settings/DateSettingsTab'
 import type { Settings } from '@/types/settings'
-import { ClockSettingsTab } from '@/components/ClockSettingsTab'
-import { DateSettingsTab } from '@/components/DateSettingsTab'
+import { Icon } from '@phosphor-icons/react'
+import { CalendarIcon } from '@phosphor-icons/react/dist/icons/Calendar'
+import { ClockIcon } from '@phosphor-icons/react/dist/icons/Clock'
+import { PaletteIcon } from '@phosphor-icons/react/dist/icons/Palette'
+import { XIcon } from '@phosphor-icons/react/dist/icons/X'
+import { useEffect, useRef, useState } from 'preact/hooks'
 
 type SettingsPanelProps = {
   isOpen: boolean
@@ -19,13 +20,13 @@ type TabId = 'clock' | 'date' | 'appearance'
 type Tab = {
   id: TabId
   label: string
-  icon: typeof Clock
+  icon: Icon
 }
 
 const tabs: Tab[] = [
-  { id: 'clock', label: 'Clock', icon: Clock },
-  { id: 'date', label: 'Date', icon: Calendar },
-  { id: 'appearance', label: 'Appearance', icon: Palette },
+  { id: 'clock', label: 'Clock', icon: ClockIcon },
+  { id: 'date', label: 'Date', icon: CalendarIcon },
+  { id: 'appearance', label: 'Appearance', icon: PaletteIcon },
 ]
 
 export function SettingsPanel({
@@ -75,7 +76,7 @@ export function SettingsPanel({
             class="p-1.5 text-gray-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
             aria-label="Close settings"
           >
-            <X size={20} weight="bold" />
+            <XIcon size={20} weight="bold" />
           </button>
         </div>
 
@@ -124,7 +125,7 @@ export function SettingsPanel({
             )}
             {activeTab === 'appearance' && (
               <div class="flex flex-col items-center justify-center h-full text-center">
-                <Palette
+                <PaletteIcon
                   size={48}
                   class="text-gray-600 mb-4"
                   weight="duotone"
