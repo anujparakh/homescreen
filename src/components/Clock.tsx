@@ -3,7 +3,7 @@ import { useSettings } from '../hooks/useSettings'
 
 export function Clock() {
   const { settings } = useSettings()
-  const { showClock, use24HourFormat, showSeconds, size, alignment } =
+  const { showClock, use24HourFormat, showSeconds, size, alignment, showDate } =
     settings.clock
 
   const [time, setTime] = useState(new Date())
@@ -58,14 +58,16 @@ export function Clock() {
           <div class={`${ampmSize} font-semibold text-gray-400`}>{ampm}</div>
         )}
       </div>
-      <div class={`${dateSize} text-gray-400`}>
-        {time.toLocaleDateString('en-US', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-      </div>
+      {showDate && (
+        <div class={`${dateSize} text-gray-400`}>
+          {time.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </div>
+      )}
     </div>
   )
 }

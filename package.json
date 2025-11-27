@@ -11,6 +11,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\""
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "preact": "^10.24.3"
   },
   "devDependencies": {

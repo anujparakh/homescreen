@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS: Settings = {
     showSeconds: false,
     size: 'large',
     alignment: 'center',
+    showDate: true,
   },
 }
 
