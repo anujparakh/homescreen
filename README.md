@@ -1,6 +1,6 @@
 # The Homescreen
 
-A minimalist clock web app with a dark background.
+A minimalist homescreen web app.
 
 ## Running the App
 

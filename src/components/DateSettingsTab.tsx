@@ -1,5 +1,5 @@
-import type { DateSettings } from '../types/settings'
-import { Toggle } from './Toggle'
+import type { DateSettings } from '@/types/settings'
+import { Toggle } from '@/components/Toggle'
 
 type DateSettingsTabProps = {
   settings: DateSettings

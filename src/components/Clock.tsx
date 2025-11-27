@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks'
-import { useSettings } from '../hooks/useSettings'
+import { useSettings } from '@/hooks/useSettings'
 
 export function Clock() {
   const { settings } = useSettings()

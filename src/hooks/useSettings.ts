@@ -1,6 +1,6 @@
 import { createContext } from 'preact'
 import { useContext } from 'preact/hooks'
-import type { Settings } from '../types/settings'
+import type { Settings } from '@/types/settings'
 
 export const STORAGE_KEY = 'homescreen-settings'
 

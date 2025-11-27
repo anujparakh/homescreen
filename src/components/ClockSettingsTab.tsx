@@ -1,5 +1,5 @@
-import type { ClockSettings } from '../types/settings'
-import { Toggle } from './Toggle'
+import type { ClockSettings } from '@/types/settings'
+import { Toggle } from '@/components/Toggle'
 
 type ClockSettingsTabProps = {
   settings: ClockSettings

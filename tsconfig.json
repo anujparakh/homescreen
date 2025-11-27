@@ -15,6 +15,12 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
 
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
     /* Strict Type-Checking Options */
     "strict": true,
     "noUnusedLocals": true,

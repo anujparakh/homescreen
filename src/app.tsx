@@ -1,8 +1,8 @@
 import { GearFineIcon } from '@phosphor-icons/react'
 import { useState, useEffect } from 'preact/hooks'
-import { Clock } from './components/Clock'
-import { SettingsPanel } from './components/SettingsPanel'
-import { useSettings } from './hooks/useSettings'
+import { Clock } from '@/components/Clock'
+import { SettingsPanel } from '@/components/SettingsPanel'
+import { useSettings } from '@/hooks/useSettings'
 
 export function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)

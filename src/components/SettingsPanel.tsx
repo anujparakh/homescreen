@@ -3,9 +3,9 @@ import { X } from '@phosphor-icons/react/dist/icons/X'
 import { Clock } from '@phosphor-icons/react/dist/icons/Clock'
 import { Calendar } from '@phosphor-icons/react/dist/icons/Calendar'
 import { Palette } from '@phosphor-icons/react/dist/icons/Palette'
-import type { Settings } from '../types/settings'
-import { ClockSettingsTab } from './ClockSettingsTab'
-import { DateSettingsTab } from './DateSettingsTab'
+import type { Settings } from '@/types/settings'
+import { ClockSettingsTab } from '@/components/ClockSettingsTab'
+import { DateSettingsTab } from '@/components/DateSettingsTab'
 
 type SettingsPanelProps = {
   isOpen: boolean

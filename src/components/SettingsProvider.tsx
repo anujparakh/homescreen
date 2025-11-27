@@ -6,8 +6,8 @@ import {
   saveSettings,
   STORAGE_KEY,
   type SettingsContextValue,
-} from '../hooks/useSettings'
-import type { Settings } from '../types/settings'
+} from '@/hooks/useSettings'
+import type { Settings } from '@/types/settings'
 
 type SettingsProviderProps = {
   children: ComponentChildren
