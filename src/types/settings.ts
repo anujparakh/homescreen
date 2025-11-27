@@ -2,7 +2,6 @@ export type ClockSettings = {
   showClock: boolean
   use24HourFormat: boolean
   showSeconds: boolean
-  showDate: boolean
   size: 'small' | 'large'
   alignment:
     | 'bottom-left'
@@ -12,6 +11,15 @@ export type ClockSettings = {
     | 'center'
 }
 
+export type DateSettings = {
+  showDate: boolean
+  showDayOfWeek: boolean
+  showMonthAndDay: boolean
+  shortMonthName: boolean
+  showYear: boolean
+}
+
 export type Settings = {
   clock: ClockSettings
+  date: DateSettings
 }

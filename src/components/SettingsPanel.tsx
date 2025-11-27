@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'preact/hooks'
 import { X } from '@phosphor-icons/react/dist/icons/X'
 import { Clock } from '@phosphor-icons/react/dist/icons/Clock'
+import { Calendar } from '@phosphor-icons/react/dist/icons/Calendar'
 import { Palette } from '@phosphor-icons/react/dist/icons/Palette'
 import type { Settings } from '../types/settings'
 import { ClockSettingsTab } from './ClockSettingsTab'
+import { DateSettingsTab } from './DateSettingsTab'
 
 type SettingsPanelProps = {
   isOpen: boolean
@@ -12,7 +14,7 @@ type SettingsPanelProps = {
   onSettingsChange: (settings: Settings) => void
 }
 
-type TabId = 'clock' | 'appearance'
+type TabId = 'clock' | 'date' | 'appearance'
 
 type Tab = {
   id: TabId
@@ -22,6 +24,7 @@ type Tab = {
 
 const tabs: Tab[] = [
   { id: 'clock', label: 'Clock', icon: Clock },
+  { id: 'date', label: 'Date', icon: Calendar },
   { id: 'appearance', label: 'Appearance', icon: Palette },
 ]
 
@@ -108,6 +111,14 @@ export function SettingsPanel({
                 settings={settings.clock}
                 onChange={clockSettings =>
                   onSettingsChange({ ...settings, clock: clockSettings })
+                }
+              />
+            )}
+            {activeTab === 'date' && (
+              <DateSettingsTab
+                settings={settings.date}
+                onChange={dateSettings =>
+                  onSettingsChange({ ...settings, date: dateSettings })
                 }
               />
             )}

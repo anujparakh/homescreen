@@ -3,8 +3,10 @@ import { useSettings } from '../hooks/useSettings'
 
 export function Clock() {
   const { settings } = useSettings()
-  const { showClock, use24HourFormat, showSeconds, size, alignment, showDate } =
+  const { showClock, use24HourFormat, showSeconds, size, alignment } =
     settings.clock
+  const { showDate, showDayOfWeek, showMonthAndDay, shortMonthName, showYear } =
+    settings.date
 
   const [time, setTime] = useState(new Date())
 
@@ -61,10 +63,12 @@ export function Clock() {
       {showDate && (
         <div class={`${dateSize} text-gray-400`}>
           {time.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            ...(showDayOfWeek && { weekday: 'long' }),
+            ...(showYear && { year: 'numeric' }),
+            ...(showMonthAndDay && {
+              month: shortMonthName ? 'short' : 'long',
+              day: 'numeric',
+            }),
           })}
         </div>
       )}

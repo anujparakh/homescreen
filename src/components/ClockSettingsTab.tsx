@@ -52,17 +52,6 @@ export function ClockSettingsTab({
         />
       </div>
 
-      {/* Show Date */}
-      <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
-        <label class="text-gray-200 font-medium">Show Date</label>
-        <Toggle
-          checked={settings.showDate}
-          onChange={checked => updateSetting('showDate', checked)}
-          leftLabel="Off"
-          rightLabel="On"
-        />
-      </div>
-
       {/* Size */}
       <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
         <label class="text-gray-200 font-medium">Clock Size</label>
