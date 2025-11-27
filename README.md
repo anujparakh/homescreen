@@ -1,4 +1,4 @@
-# Homescreen Clock
+# The Homescreen
 
 A minimalist clock web app with a dark background.
 
