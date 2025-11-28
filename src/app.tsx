@@ -12,9 +12,13 @@ export function App() {
   const { settings, setSettings } = useSettings()
   const backgroundRotation = useBackgroundRotation(settings.background)
 
-  // Handle fullscreen toggle with 'f' key
+  // Handle keyboard shortcuts
   useEffect(() => {
+    let lastSpaceTime = 0
+    const DOUBLE_PRESS_DELAY = 300
+
     const handleKeyPress = (e: KeyboardEvent) => {
+      // Toggle fullscreen with 'f' key
       if (e.key === 'f' || e.key === 'F') {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen().catch(err => {
@@ -26,11 +30,23 @@ export function App() {
           })
         }
       }
+
+      // Skip to next background with double-space
+      if (e.key === ' ') {
+        const currentTime = Date.now()
+        if (currentTime - lastSpaceTime < DOUBLE_PRESS_DELAY) {
+          e.preventDefault()
+          backgroundRotation.skipToNext()
+          lastSpaceTime = 0
+        } else {
+          lastSpaceTime = currentTime
+        }
+      }
     }
 
     document.addEventListener('keydown', handleKeyPress)
     return () => document.removeEventListener('keydown', handleKeyPress)
-  }, [])
+  }, [backgroundRotation])
 
   return (
     <>
