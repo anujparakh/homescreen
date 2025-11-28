@@ -74,7 +74,7 @@ export function App() {
       const currentTime = Date.now()
       if (currentTime - lastTapTime < DOUBLE_TAP_DELAY) {
         e.preventDefault()
-        goFullScreen(document)
+        backgroundRotation.skipToNext()
         lastTapTime = 0
       } else {
         lastTapTime = currentTime
@@ -134,16 +134,4 @@ export function App() {
       </div>
     </>
   )
-}
-
-function goFullScreen(document: Document) {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(err => {
-      console.error('Error attempting to enable fullscreen:', err)
-    })
-  } else {
-    document.exitFullscreen().catch(err => {
-      console.error('Error attempting to exit fullscreen:', err)
-    })
-  }
 }
