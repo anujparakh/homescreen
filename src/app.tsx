@@ -3,15 +3,18 @@ import { useState, useEffect } from 'preact/hooks'
 import { Clock } from '@/components/widgets/Clock'
 import { SettingsPanel } from '@/components/settings/SettingsPanel'
 import { BackgroundManager } from '@/components/BackgroundManager'
+import { WelcomeModal } from '@/components/WelcomeModal'
 import { useSettings } from '@/hooks/useSettings'
 import { useBackgroundRotation } from '@/hooks/useBackgroundRotation'
 import { useAdaptiveColors } from '@/hooks/useAdaptiveColors'
+import { useWelcomeModal } from '@/hooks/useWelcomeModal'
 
 export function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const { settings, setSettings } = useSettings()
   const backgroundRotation = useBackgroundRotation(settings.background)
+  const { showWelcome, closeWelcome } = useWelcomeModal()
 
   // Use the clock's alignment position for analyzing the image
   const clockPosition = settings.clock.alignment
@@ -111,6 +114,8 @@ export function App() {
           onSettingsChange={setSettings}
           onSkipToNext={backgroundRotation.skipToNext}
         />
+
+        <WelcomeModal isOpen={showWelcome} onClose={closeWelcome} />
       </div>
     </>
   )
