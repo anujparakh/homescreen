@@ -45,6 +45,12 @@ export function App() {
         }
       }
 
+      // Open settings with ',' key
+      if (e.key === ',') {
+        if (isSettingsOpen) setIsSettingsOpen(false)
+        else setIsSettingsOpen(true)
+      }
+
       // Skip to next background with double-space
       if (e.key === ' ') {
         const currentTime = Date.now()
