@@ -3,6 +3,7 @@ import { DateSettingsTab } from '@/components/settings/DateSettingsTab'
 import { BackgroundSettingsTab } from '@/components/settings/BackgroundSettingsTab'
 import { WeatherSettingsTab } from '@/components/settings/WeatherSettingsTab'
 import type { Settings } from '@/types/settings'
+import type { ImageData } from '@/types/background'
 import { Icon } from '@phosphor-icons/react'
 import { CalendarIcon } from '@phosphor-icons/react/dist/icons/Calendar'
 import { ClockIcon } from '@phosphor-icons/react/dist/icons/Clock'
@@ -17,6 +18,7 @@ type SettingsPanelProps = {
   settings: Settings
   onSettingsChange: (settings: Settings) => void
   onSkipToNext?: () => void
+  currentImage?: ImageData | null
 }
 
 type TabId = 'clock' | 'date' | 'background' | 'weather'
@@ -40,6 +42,7 @@ export function SettingsPanel({
   settings,
   onSettingsChange,
   onSkipToNext,
+  currentImage,
 }: SettingsPanelProps) {
   const [activeTab, setActiveTab] = useState<TabId>('background')
   const panelRef = useRef<HTMLDivElement>(null)
@@ -139,6 +142,7 @@ export function SettingsPanel({
                   })
                 }
                 {...(onSkipToNext ? { onSkipToNext } : {})}
+                currentImage={currentImage}
               />
             )}
             {activeTab === 'weather' && (

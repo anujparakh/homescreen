@@ -9,6 +9,7 @@ import { useBackgroundRotation } from '@/hooks/useBackgroundRotation'
 import { useAdaptiveColors } from '@/hooks/useAdaptiveColors'
 import { useWelcomeModal } from '@/hooks/useWelcomeModal'
 import { useWeather } from '@/hooks/useWeather'
+import { goFullScreen } from '@/util/common-utils'
 
 export function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -129,6 +130,7 @@ export function App() {
           settings={settings}
           onSettingsChange={setSettings}
           onSkipToNext={backgroundRotation.skipToNext}
+          currentImage={backgroundRotation.currentImage}
         />
 
         <WelcomeModal isOpen={showWelcome} onClose={closeWelcome} />

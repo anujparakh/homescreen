@@ -1,4 +1,5 @@
 import type { BackgroundSettings } from '@/types/settings'
+import type { ImageData } from '@/types/background'
 import { Toggle } from '@/components/primitives/Toggle'
 import { Select } from '@/components/primitives/Select'
 
@@ -6,12 +7,14 @@ type BackgroundSettingsTabProps = {
   settings: BackgroundSettings
   onChange: (settings: BackgroundSettings) => void
   onSkipToNext?: () => void
+  currentImage?: ImageData | null
 }
 
 export function BackgroundSettingsTab({
   settings,
   onChange,
   onSkipToNext,
+  currentImage,
 }: BackgroundSettingsTabProps) {
   const updateSetting = <K extends keyof BackgroundSettings>(
     key: K,
@@ -86,15 +89,28 @@ export function BackgroundSettingsTab({
             />
           </div>
 
-          {/* Skip to Next Button */}
-          {settings.enabled && onSkipToNext && (
-            <button
-              type="button"
-              onClick={onSkipToNext}
-              class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800"
-            >
-              Skip to Next Background
-            </button>
+          {/* Action Buttons */}
+          {settings.enabled && (
+            <div class="space-y-3">
+              {onSkipToNext && (
+                <button
+                  type="button"
+                  onClick={onSkipToNext}
+                  class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800"
+                >
+                  Skip to Next Background
+                </button>
+              )}
+              {currentImage && (
+                <button
+                  type="button"
+                  onClick={() => window.open(currentImage.url, '_blank')}
+                  class="w-full py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-800"
+                >
+                  Open Image
+                </button>
+              )}
+            </div>
           )}
         </>
       )}
