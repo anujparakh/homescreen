@@ -11,6 +11,7 @@ import {
   CloudFogIcon,
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
+import { cn } from '@/util/cn'
 
 interface WidgetGroupProps {
   textColor: string
@@ -81,20 +82,20 @@ export function WidgetGroup({
   const containerAlignment = alignmentClasses[alignment]
 
   return (
-    <div class={`w-full flex flex-col gap-4 ${containerAlignment}`}>
+    <div class={cn('w-full flex flex-col gap-4', containerAlignment)}>
       <div class="backdrop-blur-xs bg-black/30 rounded-xl sm:rounded-2xl px-4 py-4 sm:px-8 sm:py-6 shadow-lg">
         {/* ------------ */}
         {/* Clock Widget */}
         {/* ------------ */}
         <div class="flex items-baseline gap-2 sm:gap-3">
           <div
-            class={`${timeSize} font-bold ${textColor} tracking-wider font-mono`}
+            class={cn(timeSize, 'font-bold tracking-wider font-mono', textColor)}
           >
             {displayHours}:{minutes}
             {showSeconds ? `:${seconds}` : ''}
           </div>
           {!use24HourFormat && (
-            <div class={`${ampmSize} font-semibold ${secondaryTextColor}`}>
+            <div class={cn(ampmSize, 'font-semibold', secondaryTextColor)}>
               {ampm}
             </div>
           )}
@@ -104,7 +105,7 @@ export function WidgetGroup({
         {/* ----------- */}
         {showDate && (
           <div
-            class={`${dateSize} ${secondaryTextColor} mt-2 transition-colors duration-500`}
+            class={cn(dateSize, secondaryTextColor, 'mt-2 transition-colors duration-500')}
           >
             {time.toLocaleDateString('en-US', {
               ...(showDayOfWeek && { weekday: 'long' }),
@@ -120,9 +121,9 @@ export function WidgetGroup({
         {/* Weather Widget */}
         {/* -------------- */}
         {showWeather && weather && (
-          <div class={`mt-2 sm:mt-3 transition-colors duration-500`}>
+          <div class="mt-2 sm:mt-3 transition-colors duration-500">
             {/* Compact weather info row */}
-            <div class={`flex items-center gap-2 sm:gap-3 ${secondaryTextColor}`}>
+            <div class={cn('flex items-center gap-2 sm:gap-3', secondaryTextColor)}>
               {/* Weather Icon */}
               {showCondition &&
                 (() => {
@@ -134,7 +135,10 @@ export function WidgetGroup({
               {/* Temperature */}
               {showTemperature && (
                 <span
-                  class={`${size === 'large' ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'} font-semibold`}
+                  class={cn(
+                    size === 'large' ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl',
+                    'font-semibold'
+                  )}
                 >
                   {weather.temperature}°{unit === 'fahrenheit' ? 'F' : 'C'}
                 </span>

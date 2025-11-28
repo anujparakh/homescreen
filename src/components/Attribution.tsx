@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { ImageData } from '@/types/background'
 import { useSettings } from '@/hooks/useSettings'
+import { cn } from '@/util/cn'
 
 const FADE_OUT_DELAY = 10000
 
@@ -25,16 +26,15 @@ export function Attribution({ image }: AttributionProps) {
     return null
   }
 
-  const locationClass =
-    settings.clock.alignment === 'bottom-right'
-      ? 'bottom-3 left-3 sm:bottom-4 sm:left-4'
-      : 'bottom-3 right-3 sm:bottom-4 sm:right-4'
-
   return (
     <div
-      class={`fixed ${locationClass} text-white/60 text-xs sm:text-sm transition-opacity duration-1000 hover:opacity-100 ${
+      class={cn(
+        'fixed text-white/60 text-xs sm:text-sm transition-opacity duration-1000 hover:opacity-100',
+        settings.clock.alignment === 'bottom-right'
+          ? 'bottom-3 left-3 sm:bottom-4 sm:left-4'
+          : 'bottom-3 right-3 sm:bottom-4 sm:right-4',
         isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
+      )}
     >
       {image.photographer && <div>Photo by {image.photographer}</div>}
       {image.location && (

@@ -11,6 +11,7 @@ import { CloudIcon } from '@phosphor-icons/react/dist/icons/Cloud'
 import { ImageIcon } from '@phosphor-icons/react/dist/icons/Image'
 import { XIcon } from '@phosphor-icons/react/dist/icons/X'
 import { useEffect, useRef, useState } from 'preact/hooks'
+import { cn } from '@/util/cn'
 
 type SettingsPanelProps = {
   isOpen: boolean
@@ -105,11 +106,12 @@ export function SettingsPanel({
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  class={`w-full flex items-center justify-center sm:justify-start gap-3 px-2 sm:px-4 py-3 transition-all duration-200 ${
+                  class={cn(
+                    'w-full flex items-center justify-center sm:justify-start gap-3 px-2 sm:px-4 py-3 transition-all duration-200',
                     activeTab === tab.id
                       ? 'bg-indigo-600 text-white border-r-2 border-indigo-400'
                       : 'text-gray-400 hover:bg-slate-800 hover:text-gray-300'
-                  }`}
+                  )}
                 >
                   <Icon
                     size={20}

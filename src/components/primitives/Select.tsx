@@ -1,3 +1,5 @@
+import { cn } from '@/util/cn'
+
 type SelectOption<T extends string> = {
   value: T
   label: string
@@ -24,11 +26,13 @@ export function Select<T extends string>({
             key={option.value}
             type="button"
             onClick={() => onChange(option.value)}
-            class={`px-4 py-2 rounded-xl font-medium text-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
+            class={cn(
+              'px-4 py-2 rounded-xl font-medium text-sm transition-all',
+              'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800',
               value === option.value
                 ? 'bg-indigo-600 text-white shadow-lg'
                 : 'bg-slate-700 text-gray-300 hover:bg-slate-600 hover:text-white'
-            }`}
+            )}
           >
             {option.label}
           </button>
