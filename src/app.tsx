@@ -5,12 +5,26 @@ import { SettingsPanel } from '@/components/settings/SettingsPanel'
 import { BackgroundManager } from '@/components/BackgroundManager'
 import { useSettings } from '@/hooks/useSettings'
 import { useBackgroundRotation } from '@/hooks/useBackgroundRotation'
+import { useAdaptiveColors } from '@/hooks/useAdaptiveColors'
 
 export function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const { settings, setSettings } = useSettings()
   const backgroundRotation = useBackgroundRotation(settings.background)
+
+  // Use the clock's alignment position for analyzing the image
+  const clockPosition = settings.clock.alignment
+  const adaptiveColors = useAdaptiveColors(
+    backgroundRotation.currentImage,
+    clockPosition
+  )
+
+  // Settings button is always in top-right, so analyze that region
+  const settingsColors = useAdaptiveColors(
+    backgroundRotation.currentImage,
+    'top-right'
+  )
 
   // Handle keyboard shortcuts
   useEffect(() => {
@@ -68,7 +82,7 @@ export function App() {
         {/* Settings Button */}
         <button
           onClick={() => setIsSettingsOpen(true)}
-          class={`fixed top-4 right-4 p-2 text-gray-400 hover:text-white transition-all duration-300 ${
+          class={`fixed top-4 right-4 p-2 ${settingsColors.secondaryTextColor} hover:${settingsColors.textColor} transition-all duration-300 ${
             isHovered ? 'opacity-100' : 'opacity-0'
           } group z-50 hover:opacity-100`}
           aria-label="Open settings"
@@ -79,7 +93,10 @@ export function App() {
           />
         </button>
 
-        <Clock />
+        <Clock
+          textColor={adaptiveColors.textColor}
+          secondaryTextColor={adaptiveColors.secondaryTextColor}
+        />
 
         <SettingsPanel
           isOpen={isSettingsOpen}
