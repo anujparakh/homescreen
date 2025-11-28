@@ -19,7 +19,15 @@ export type DateSettings = {
   showYear: boolean
 }
 
+export type BackgroundSettings = {
+  enabled: boolean
+  source: 'chromecast' | 'sourced'
+  rotationInterval: number
+  showAttribution: boolean
+}
+
 export type Settings = {
   clock: ClockSettings
   date: DateSettings
+  background: BackgroundSettings
 }
