@@ -1,10 +1,12 @@
 import { ClockSettingsTab } from '@/components/settings/ClockSettingsTab'
 import { DateSettingsTab } from '@/components/settings/DateSettingsTab'
 import { BackgroundSettingsTab } from '@/components/settings/BackgroundSettingsTab'
+import { WeatherSettingsTab } from '@/components/settings/WeatherSettingsTab'
 import type { Settings } from '@/types/settings'
 import { Icon } from '@phosphor-icons/react'
 import { CalendarIcon } from '@phosphor-icons/react/dist/icons/Calendar'
 import { ClockIcon } from '@phosphor-icons/react/dist/icons/Clock'
+import { CloudIcon } from '@phosphor-icons/react/dist/icons/Cloud'
 import { ImageIcon } from '@phosphor-icons/react/dist/icons/Image'
 import { XIcon } from '@phosphor-icons/react/dist/icons/X'
 import { useEffect, useRef, useState } from 'preact/hooks'
@@ -17,7 +19,7 @@ type SettingsPanelProps = {
   onSkipToNext?: () => void
 }
 
-type TabId = 'clock' | 'date' | 'background'
+type TabId = 'clock' | 'date' | 'background' | 'weather'
 
 type Tab = {
   id: TabId
@@ -29,6 +31,7 @@ const tabs: Tab[] = [
   { id: 'clock', label: 'Clock', icon: ClockIcon },
   { id: 'date', label: 'Date', icon: CalendarIcon },
   { id: 'background', label: 'Background', icon: ImageIcon },
+  { id: 'weather', label: 'Weather', icon: CloudIcon },
 ]
 
 export function SettingsPanel({
@@ -136,6 +139,14 @@ export function SettingsPanel({
                   })
                 }
                 {...(onSkipToNext ? { onSkipToNext } : {})}
+              />
+            )}
+            {activeTab === 'weather' && (
+              <WeatherSettingsTab
+                settings={settings.weather}
+                onChange={weatherSettings =>
+                  onSettingsChange({ ...settings, weather: weatherSettings })
+                }
               />
             )}
           </div>

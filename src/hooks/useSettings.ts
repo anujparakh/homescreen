@@ -25,6 +25,16 @@ export const DEFAULT_SETTINGS: Settings = {
     rotationInterval: 1800000,
     showAttribution: true,
   },
+  weather: {
+    showWeather: true,
+    unit: 'fahrenheit',
+    locationMode: 'auto',
+    manualLocation: 'Austin, TX',
+    refreshInterval: 600000,
+    showTemperature: true,
+    showCondition: true,
+    showHighLow: true,
+  },
 }
 
 export function loadSettings(): Settings {
@@ -36,6 +46,7 @@ export function loadSettings(): Settings {
         clock: { ...DEFAULT_SETTINGS.clock, ...parsed.clock },
         date: { ...DEFAULT_SETTINGS.date, ...parsed.date },
         background: { ...DEFAULT_SETTINGS.background, ...parsed.background },
+        weather: { ...DEFAULT_SETTINGS.weather, ...parsed.weather },
       }
     }
   } catch (error) {

@@ -8,6 +8,7 @@ import { useSettings } from '@/hooks/useSettings'
 import { useBackgroundRotation } from '@/hooks/useBackgroundRotation'
 import { useAdaptiveColors } from '@/hooks/useAdaptiveColors'
 import { useWelcomeModal } from '@/hooks/useWelcomeModal'
+import { useWeather } from '@/hooks/useWeather'
 
 export function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -15,6 +16,7 @@ export function App() {
   const { settings, setSettings } = useSettings()
   const backgroundRotation = useBackgroundRotation(settings.background)
   const { showWelcome, closeWelcome } = useWelcomeModal()
+  const weatherData = useWeather(settings.weather)
 
   // Use the clock's alignment position for analyzing the image
   const clockPosition = settings.clock.alignment
@@ -117,6 +119,7 @@ export function App() {
         <Clock
           textColor={adaptiveColors.textColor}
           secondaryTextColor={adaptiveColors.secondaryTextColor}
+          weather={weatherData.weather}
         />
 
         <SettingsPanel

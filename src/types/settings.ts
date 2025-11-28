@@ -26,8 +26,20 @@ export type BackgroundSettings = {
   showAttribution: boolean
 }
 
+export type WeatherSettings = {
+  showWeather: boolean
+  unit: 'celsius' | 'fahrenheit'
+  locationMode: 'auto' | 'manual'
+  manualLocation: string
+  refreshInterval: number
+  showTemperature: boolean
+  showCondition: boolean
+  showHighLow: boolean
+}
+
 export type Settings = {
   clock: ClockSettings
   date: DateSettings
   background: BackgroundSettings
+  weather: WeatherSettings
 }

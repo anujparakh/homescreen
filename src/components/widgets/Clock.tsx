@@ -1,17 +1,41 @@
 import { useState, useEffect } from 'preact/hooks'
 import { useSettings } from '@/hooks/useSettings'
+import type { WeatherData, WeatherCondition } from '@/types/weather'
+import {
+  Sun,
+  CloudSun,
+  Cloud,
+  CloudRain,
+  CloudSnow,
+  Lightning,
+  CloudFog,
+} from '@phosphor-icons/react'
+import type { Icon } from '@phosphor-icons/react'
 
 interface ClockProps {
   textColor: string
   secondaryTextColor: string
+  weather?: WeatherData | null
 }
 
-export function Clock({ textColor, secondaryTextColor }: ClockProps) {
+const WEATHER_ICONS: Record<WeatherCondition, Icon> = {
+  clear: Sun,
+  'partly-cloudy': CloudSun,
+  cloudy: Cloud,
+  rainy: CloudRain,
+  snowy: CloudSnow,
+  stormy: Lightning,
+  foggy: CloudFog,
+}
+
+export function Clock({ textColor, secondaryTextColor, weather }: ClockProps) {
   const { settings } = useSettings()
   const { showClock, use24HourFormat, showSeconds, size, alignment } =
     settings.clock
   const { showDate, showDayOfWeek, showMonthAndDay, shortMonthName, showYear } =
     settings.date
+  const { showWeather, unit, showTemperature, showCondition, showHighLow } =
+    settings.weather
 
   const [time, setTime] = useState(new Date())
 
@@ -80,6 +104,44 @@ export function Clock({ textColor, secondaryTextColor }: ClockProps) {
                 day: 'numeric',
               }),
             })}
+          </div>
+        )}
+        {showWeather && weather && (
+          <div class={`mt-3 transition-colors duration-500`}>
+            {/* Compact weather info row */}
+            <div class={`flex items-center gap-3 ${secondaryTextColor}`}>
+              {/* Weather Icon */}
+              {showCondition &&
+                (() => {
+                  const WeatherIcon = WEATHER_ICONS[weather.condition]
+                  const iconSize = size === 'large' ? 32 : 24
+                  return <WeatherIcon size={iconSize} weight="fill" />
+                })()}
+
+              {/* Temperature */}
+              {showTemperature && (
+                <span
+                  class={`${size === 'large' ? 'text-3xl' : 'text-2xl'} font-semibold`}
+                >
+                  {weather.temperature}°{unit === 'fahrenheit' ? 'F' : 'C'}
+                </span>
+              )}
+
+              {/* Condition Text */}
+              {/* Commented to make this cleaner */}
+              {/* {showCondition && (
+                <span class={`${dateSize} opacity-90`}>
+                  {weather.conditionText}
+                </span>
+              )} */}
+
+              {/* High/Low */}
+              {showHighLow && (
+                <span class={`${dateSize} opacity-80`}>
+                  {weather.high}° / {weather.low}°
+                </span>
+              )}
+            </div>
           </div>
         )}
       </div>
