@@ -2,33 +2,37 @@ import { useState, useEffect } from 'preact/hooks'
 import { useSettings } from '@/hooks/useSettings'
 import type { WeatherData, WeatherCondition } from '@/types/weather'
 import {
-  Sun,
-  CloudSun,
-  Cloud,
-  CloudRain,
-  CloudSnow,
-  Lightning,
-  CloudFog,
+  SunIcon,
+  CloudSunIcon,
+  CloudIcon,
+  CloudRainIcon,
+  CloudSnowIcon,
+  LightningIcon,
+  CloudFogIcon,
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 
-interface ClockProps {
+interface WidgetGroupProps {
   textColor: string
   secondaryTextColor: string
   weather?: WeatherData | null
 }
 
 const WEATHER_ICONS: Record<WeatherCondition, Icon> = {
-  clear: Sun,
-  'partly-cloudy': CloudSun,
-  cloudy: Cloud,
-  rainy: CloudRain,
-  snowy: CloudSnow,
-  stormy: Lightning,
-  foggy: CloudFog,
+  clear: SunIcon,
+  'partly-cloudy': CloudSunIcon,
+  cloudy: CloudIcon,
+  rainy: CloudRainIcon,
+  snowy: CloudSnowIcon,
+  stormy: LightningIcon,
+  foggy: CloudFogIcon,
 }
 
-export function Clock({ textColor, secondaryTextColor, weather }: ClockProps) {
+export function WidgetGroup({
+  textColor,
+  secondaryTextColor,
+  weather,
+}: WidgetGroupProps) {
   const { settings } = useSettings()
   const { showClock, use24HourFormat, showSeconds, size, alignment } =
     settings.clock
@@ -79,6 +83,9 @@ export function Clock({ textColor, secondaryTextColor, weather }: ClockProps) {
   return (
     <div class={`w-full flex flex-col gap-4 ${containerAlignment}`}>
       <div class="backdrop-blur-xs bg-black/30 rounded-2xl px-8 py-6 shadow-lg">
+        {/* ------------ */}
+        {/* Clock Widget */}
+        {/* ------------ */}
         <div class="flex items-baseline gap-3">
           <div
             class={`${timeSize} font-bold ${textColor} tracking-wider font-mono`}
@@ -92,6 +99,9 @@ export function Clock({ textColor, secondaryTextColor, weather }: ClockProps) {
             </div>
           )}
         </div>
+        {/* ----------- */}
+        {/* Date Widget */}
+        {/* ----------- */}
         {showDate && (
           <div
             class={`${dateSize} ${secondaryTextColor} mt-2 transition-colors duration-500`}
@@ -106,6 +116,9 @@ export function Clock({ textColor, secondaryTextColor, weather }: ClockProps) {
             })}
           </div>
         )}
+        {/* -------------- */}
+        {/* Weather Widget */}
+        {/* -------------- */}
         {showWeather && weather && (
           <div class={`mt-3 transition-colors duration-500`}>
             {/* Compact weather info row */}

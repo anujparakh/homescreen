@@ -1,6 +1,6 @@
 import { GearFineIcon } from '@phosphor-icons/react'
 import { useState, useEffect } from 'preact/hooks'
-import { Clock } from '@/components/widgets/Clock'
+import { WidgetGroup } from '@/components/widgets/WidgetGroup'
 import { SettingsPanel } from '@/components/settings/SettingsPanel'
 import { BackgroundManager } from '@/components/BackgroundManager'
 import { WelcomeModal } from '@/components/WelcomeModal'
@@ -116,7 +116,7 @@ export function App() {
           />
         </button>
 
-        <Clock
+        <WidgetGroup
           textColor={adaptiveColors.textColor}
           secondaryTextColor={adaptiveColors.secondaryTextColor}
           weather={weatherData.weather}
