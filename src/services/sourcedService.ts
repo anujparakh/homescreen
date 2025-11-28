@@ -18,9 +18,11 @@ export function getNextSourcedImage(): ImageData {
   saveCurrentIndex(nextIndex)
 
   return {
-    url: imageUrl,
+    url: imageUrl ?? '',
     attribution: 'Local Images',
     source: 'sourced',
+    photographer: undefined,
+    location: undefined,
   }
 }
 

@@ -1,16 +1,13 @@
 import type { ChromecastImage, ImageData } from '@/types/background'
+import imageData from './image-data.json'
 
-const LOCAL_JSON_PATH = '/chromecast-images.json'
+const BASE_URL = 'https://background-images.anujparakh.dev/chromecast'
 const MAX_RETRY_ATTEMPTS = 5
 const VALIDATION_TIMEOUT = 10000
 
 export async function fetchChromecastImage(): Promise<ImageData> {
-  const response = await fetch(LOCAL_JSON_PATH)
-  if (!response.ok) {
-    throw new Error(`Failed to fetch Chromecast images: ${response.status}`)
-  }
+  const images: ChromecastImage[] = imageData as ChromecastImage[]
 
-  const images: ChromecastImage[] = await response.json()
   if (!images || images.length === 0) {
     throw new Error('No images available from Chromecast')
   }
@@ -29,34 +26,30 @@ async function getRandomValidImage(
   const randomIndex = Math.floor(Math.random() * images.length)
   const image = images[randomIndex]
 
-  const bestUrl = getBestQualityUrl(image.url)
+  if (!image) {
+    throw new Error('Failed to select a random image')
+  }
 
-  const isValid = await validateImageUrl(bestUrl)
+  const imageUrl = `${BASE_URL}/${image.filename}`
+
+  const isValid = await validateImageUrl(imageUrl)
   if (!isValid) {
     return getRandomValidImage(images, attempt + 1)
   }
 
   return {
-    url: bestUrl,
+    url: imageUrl,
     photographer:
       image.photographer && image.photographer !== 'Unknown'
         ? image.photographer
-        : null,
-    location: image.location || undefined,
+        : undefined,
+    location:
+      image.location && image.location.trim() !== ''
+        ? image.location
+        : undefined,
     attribution: 'Chromecast Backgrounds',
     source: 'chromecast',
   }
-}
-
-function getBestQualityUrl(url: string): string {
-  if (url.includes('/s2560/')) {
-    return url.replace('/s2560/', '/s3840/')
-  }
-
-  return url.replace(
-    /s1280-w1280-h720-p-k-no-nd-mv|s1920-w1920-h1080/,
-    's2560-w2560-h1440'
-  )
 }
 
 async function validateImageUrl(url: string): Promise<boolean> {

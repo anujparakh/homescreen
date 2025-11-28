@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'preact/hooks'
 import type { ImageData } from '@/types/background'
 import type { BackgroundSettings } from '@/types/settings'
-import { fetchChromecastImage } from '@/services/chromecastScraper'
+import { fetchChromecastImage } from '@/services/chromecastService'
 import { getNextSourcedImage } from '@/services/sourcedService'
 
 const PRELOAD_TIMEOUT = 30000
