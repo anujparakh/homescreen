@@ -18,7 +18,7 @@ Features:
 ## Demo
 
 First time welcome screen\
-<img width="1582" height="1030" alt="image" src="https://github.com/user-attachments/assets/296e4f99-ad2b-449f-b3c3-b6ce0a195531" />
+<img width="1582" height="1030" alt="image" src="https://github.com/user-attachments/assets/fb6312e2-6fed-4b96-8aeb-42a87df54296" />
 
 Regular Homescreen\
 <img width="1582" height="1030" alt="image" src="https://github.com/user-attachments/assets/82a3a4c3-e8e7-4077-ba4a-fd7d8c5ef793" />
