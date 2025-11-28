@@ -21,7 +21,7 @@ export function App() {
   )
 
   // Settings button is always in top-right, so analyze that region
-  const settingsColors = useAdaptiveColors(
+  const { isDark } = useAdaptiveColors(
     backgroundRotation.currentImage,
     'top-right'
   )
@@ -82,14 +82,14 @@ export function App() {
         {/* Settings Button */}
         <button
           onClick={() => setIsSettingsOpen(true)}
-          class={`fixed top-4 right-4 p-2 ${settingsColors.secondaryTextColor} hover:${settingsColors.textColor} transition-all duration-300 ${
+          class={`fixed top-4 right-4 p-2 transition-all duration-300 ${
             isHovered ? 'opacity-100' : 'opacity-0'
           } group z-50 hover:opacity-100`}
           aria-label="Open settings"
         >
           <GearFineIcon
             size={24}
-            class="transition-transform duration-500 group-hover:rotate-90"
+            class={`transition-transform duration-500 group-hover:rotate-90 ${isDark ? 'text-gray-200' : 'text-gray-900'}`}
           />
         </button>
 
