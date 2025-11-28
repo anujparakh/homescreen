@@ -37,15 +37,7 @@ export function App() {
     const handleKeyPress = (e: KeyboardEvent) => {
       // Toggle fullscreen with 'f' key
       if (e.key === 'f' || e.key === 'F') {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().catch(err => {
-            console.error('Error attempting to enable fullscreen:', err)
-          })
-        } else {
-          document.exitFullscreen().catch(err => {
-            console.error('Error attempting to exit fullscreen:', err)
-          })
-        }
+        goFullScreen(document)
       }
 
       // Open settings with ',' key
@@ -69,6 +61,26 @@ export function App() {
 
     document.addEventListener('keydown', handleKeyPress)
     return () => document.removeEventListener('keydown', handleKeyPress)
+  }, [backgroundRotation])
+
+  // Handle double-tap for mobile
+  useEffect(() => {
+    let lastTapTime = 0
+    const DOUBLE_TAP_DELAY = 300
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const currentTime = Date.now()
+      if (currentTime - lastTapTime < DOUBLE_TAP_DELAY) {
+        e.preventDefault()
+        goFullScreen(document)
+        lastTapTime = 0
+      } else {
+        lastTapTime = currentTime
+      }
+    }
+
+    document.addEventListener('touchend', handleTouchEnd)
+    return () => document.removeEventListener('touchend', handleTouchEnd)
   }, [backgroundRotation])
 
   return (
@@ -119,4 +131,16 @@ export function App() {
       </div>
     </>
   )
+}
+
+function goFullScreen(document: Document) {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.error('Error attempting to enable fullscreen:', err)
+    })
+  } else {
+    document.exitFullscreen().catch(err => {
+      console.error('Error attempting to exit fullscreen:', err)
+    })
+  }
 }

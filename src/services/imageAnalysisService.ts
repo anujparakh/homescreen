@@ -9,6 +9,40 @@ export interface ImageAnalysis {
   secondaryTextColor: string // recommended secondary text color class
 }
 
+/**
+ * Color configurations based on brightness levels
+ * Map keys represent the maximum brightness threshold for each level
+ */
+export const BRIGHTNESS_COLOR_MAP: Map<
+  number,
+  { textColor: string; secondaryTextColor: string }
+> = new Map([
+  // Dark images (0-85): White text for high contrast
+  [
+    85,
+    {
+      textColor: 'text-white',
+      secondaryTextColor: 'text-[#f7f7f7]',
+    },
+  ],
+  // Medium brightness (86-170): Light gray text
+  [
+    170,
+    {
+      textColor: 'text-gray-200',
+      secondaryTextColor: 'text-[#f7f7f7]',
+    },
+  ],
+  // Bright images (171-255): Dark text for contrast
+  [
+    255,
+    {
+      textColor: 'text-gray-900',
+      secondaryTextColor: 'text-blue-gray-800',
+    },
+  ],
+])
+
 export type Position =
   | 'center'
   | 'top-left'
@@ -119,23 +153,23 @@ export async function analyzeImageBrightness(
         // Determine if image is dark (threshold at middle gray)
         const isDark = averageBrightness < 128
 
-        console.log(
-          `Image analyzed at ${position}: Avg Brightness = ${averageBrightness.toFixed(
-            2
-          )}, isDark = ${isDark}`
-        )
-
-        // Provide Tailwind color classes based on brightness
-        const textColor = isDark ? 'text-white' : 'text-gray-900'
-        const secondaryTextColor = isDark
-          ? 'text-gray-200'
-          : 'text-blue-gray-800'
+        // Find appropriate color scheme based on brightness level
+        let colors = {
+          textColor: 'text-white',
+          secondaryTextColor: 'text-white',
+        }
+        for (const [maxBrightness, colorScheme] of BRIGHTNESS_COLOR_MAP) {
+          if (averageBrightness <= maxBrightness) {
+            colors = colorScheme
+            break
+          }
+        }
 
         resolve({
           averageBrightness,
           isDark,
-          textColor,
-          secondaryTextColor,
+          textColor: colors.textColor,
+          secondaryTextColor: colors.secondaryTextColor,
         })
       } catch (error) {
         reject(error)
@@ -157,5 +191,5 @@ export const DEFAULT_ANALYSIS: ImageAnalysis = {
   averageBrightness: 0,
   isDark: true,
   textColor: 'text-white',
-  secondaryTextColor: 'text-gray-400',
+  secondaryTextColor: 'text-white',
 }

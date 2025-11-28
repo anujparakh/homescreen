@@ -9,7 +9,7 @@ export const DEFAULT_SETTINGS: Settings = {
     showClock: true,
     use24HourFormat: false,
     showSeconds: false,
-    size: 'large',
+    size: 'small',
     alignment: 'center',
   },
   date: {

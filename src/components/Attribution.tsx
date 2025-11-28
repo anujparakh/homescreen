@@ -2,7 +2,7 @@ import { useState, useEffect } from 'preact/hooks'
 import type { ImageData } from '@/types/background'
 import { useSettings } from '@/hooks/useSettings'
 
-const FADE_OUT_DELAY = 5000
+const FADE_OUT_DELAY = 10000
 
 type AttributionProps = {
   image: ImageData
