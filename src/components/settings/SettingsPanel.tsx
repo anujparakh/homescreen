@@ -70,22 +70,22 @@ export function SettingsPanel({
 
   return (
     <div
-      class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
       <div
         ref={panelRef}
-        class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl min-h-[60vh] max-h-[80vh] flex flex-col border border-slate-700"
+        class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl min-h-[60vh] max-h-[90vh] md:max-h-[80vh] flex flex-col border border-slate-700"
       >
         {/* Header */}
-        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-          <div className="flex flex-row w-auto items-center gap-4">
+        <div class="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-700">
+          <div className="flex flex-row w-auto items-center gap-2 sm:gap-4">
             <img
               src="/favicon.svg"
-              className="ml-0 aspect-square h-10 rounded-lg"
+              className="ml-0 aspect-square h-8 sm:h-10 rounded-lg"
             />
 
-            <h2 class="text-xl font-semibold text-white">The Homescreen</h2>
+            <h2 class="text-lg sm:text-xl font-semibold text-white">The Homescreen</h2>
           </div>
           <button
             onClick={onClose}
@@ -98,14 +98,14 @@ export function SettingsPanel({
 
         <div class="flex flex-1 overflow-hidden rounded-b-xl">
           {/* Tabs Sidebar */}
-          <div class="w-48 bg-slate-900 border-r border-slate-700">
+          <div class="w-16 sm:w-48 bg-slate-900 border-r border-slate-700">
             {tabs.map(tab => {
               const Icon = tab.icon
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  class={`w-full flex items-center gap-3 px-4 py-3 transition-all duration-200 ${
+                  class={`w-full flex items-center justify-center sm:justify-start gap-3 px-2 sm:px-4 py-3 transition-all duration-200 ${
                     activeTab === tab.id
                       ? 'bg-indigo-600 text-white border-r-2 border-indigo-400'
                       : 'text-gray-400 hover:bg-slate-800 hover:text-gray-300'
@@ -115,14 +115,14 @@ export function SettingsPanel({
                     size={20}
                     weight={activeTab === tab.id ? 'fill' : 'regular'}
                   />
-                  <span class="text-sm font-medium">{tab.label}</span>
+                  <span class="text-sm font-medium hidden sm:inline">{tab.label}</span>
                 </button>
               )
             })}
           </div>
 
           {/* Tab Content */}
-          <div class="flex-1 p-6 overflow-y-auto bg-slate-800 rounded-b-xl">
+          <div class="flex-1 p-4 sm:p-6 overflow-y-auto bg-slate-800 rounded-b-xl">
             {activeTab === 'clock' && (
               <ClockSettingsTab
                 settings={settings.clock}

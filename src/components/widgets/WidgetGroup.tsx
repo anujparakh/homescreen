@@ -64,10 +64,10 @@ export function WidgetGroup({
   const seconds = time.getSeconds().toString().padStart(2, '0')
   const ampm = hours24 >= 12 ? 'PM' : 'AM'
 
-  // Size classes
-  const timeSize = size === 'large' ? 'text-8xl' : 'text-5xl'
-  const ampmSize = size === 'large' ? 'text-4xl' : 'text-2xl'
-  const dateSize = size === 'large' ? 'text-2xl' : 'text-lg'
+  // Size classes - responsive
+  const timeSize = size === 'large' ? 'text-5xl sm:text-7xl md:text-8xl' : 'text-4xl sm:text-5xl'
+  const ampmSize = size === 'large' ? 'text-2xl sm:text-3xl md:text-4xl' : 'text-xl sm:text-2xl'
+  const dateSize = size === 'large' ? 'text-lg sm:text-xl md:text-2xl' : 'text-base sm:text-lg'
 
   // Alignment classes
   const alignmentClasses = {
@@ -82,11 +82,11 @@ export function WidgetGroup({
 
   return (
     <div class={`w-full flex flex-col gap-4 ${containerAlignment}`}>
-      <div class="backdrop-blur-xs bg-black/30 rounded-2xl px-8 py-6 shadow-lg">
+      <div class="backdrop-blur-xs bg-black/30 rounded-xl sm:rounded-2xl px-4 py-4 sm:px-8 sm:py-6 shadow-lg">
         {/* ------------ */}
         {/* Clock Widget */}
         {/* ------------ */}
-        <div class="flex items-baseline gap-3">
+        <div class="flex items-baseline gap-2 sm:gap-3">
           <div
             class={`${timeSize} font-bold ${textColor} tracking-wider font-mono`}
           >
@@ -120,21 +120,21 @@ export function WidgetGroup({
         {/* Weather Widget */}
         {/* -------------- */}
         {showWeather && weather && (
-          <div class={`mt-3 transition-colors duration-500`}>
+          <div class={`mt-2 sm:mt-3 transition-colors duration-500`}>
             {/* Compact weather info row */}
-            <div class={`flex items-center gap-3 ${secondaryTextColor}`}>
+            <div class={`flex items-center gap-2 sm:gap-3 ${secondaryTextColor}`}>
               {/* Weather Icon */}
               {showCondition &&
                 (() => {
                   const WeatherIcon = WEATHER_ICONS[weather.condition]
-                  const iconSize = size === 'large' ? 32 : 24
-                  return <WeatherIcon size={iconSize} weight="fill" />
+                  const iconSize = size === 'large' ? 28 : 20
+                  return <WeatherIcon size={iconSize} class="sm:w-6 sm:h-6 md:w-8 md:h-8" weight="fill" />
                 })()}
 
               {/* Temperature */}
               {showTemperature && (
                 <span
-                  class={`${size === 'large' ? 'text-3xl' : 'text-2xl'} font-semibold`}
+                  class={`${size === 'large' ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'} font-semibold`}
                 >
                   {weather.temperature}°{unit === 'fahrenheit' ? 'F' : 'C'}
                 </span>

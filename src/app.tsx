@@ -96,7 +96,7 @@ export function App() {
         isPreloading={backgroundRotation.isPreloading}
       />
 
-      <div class="min-h-screen flex p-8 relative">
+      <div class="min-h-screen flex p-4 sm:p-8 relative">
         {/* Hover Zone - Top Right Quarter */}
         <div
           class="fixed top-0 right-0 w-1/2 h-1/2 z-40"
@@ -107,9 +107,9 @@ export function App() {
         {/* Settings Button */}
         <button
           onClick={() => setIsSettingsOpen(true)}
-          class={`fixed top-4 right-4 p-2 transition-all duration-300 ${
+          class={`fixed top-3 right-3 sm:top-4 sm:right-4 p-2 transition-all duration-300 ${
             isHovered ? 'opacity-100' : 'opacity-0'
-          } group z-50 hover:opacity-100`}
+          } group z-50 hover:opacity-100 md:opacity-0 opacity-70`}
           aria-label="Open settings"
         >
           <GearFineIcon
