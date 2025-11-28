@@ -69,7 +69,9 @@ export function Clock({ textColor, secondaryTextColor }: ClockProps) {
           )}
         </div>
         {showDate && (
-          <div class={`${dateSize} ${secondaryTextColor} mt-2`}>
+          <div
+            class={`${dateSize} ${secondaryTextColor} mt-2 transition-colors duration-500`}
+          >
             {time.toLocaleDateString('en-US', {
               ...(showDayOfWeek && { weekday: 'long' }),
               ...(showYear && { year: 'numeric' }),

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks'
 import type { ImageData } from '@/types/background'
+import { useSettings } from '@/hooks/useSettings'
 
 const FADE_OUT_DELAY = 5000
 
@@ -9,6 +10,7 @@ type AttributionProps = {
 
 export function Attribution({ image }: AttributionProps) {
   const [isVisible, setIsVisible] = useState(true)
+  const settings = useSettings().settings
 
   useEffect(() => {
     setIsVisible(true)
@@ -23,9 +25,14 @@ export function Attribution({ image }: AttributionProps) {
     return null
   }
 
+  const locationClass =
+    settings.clock.alignment === 'bottom-right'
+      ? 'bottom-4 left-4'
+      : 'bottom-4 right-4'
+
   return (
     <div
-      class={`fixed bottom-4 right-4 text-white/60 text-sm transition-opacity duration-1000 ${
+      class={`fixed ${locationClass} text-white/60 text-sm transition-opacity duration-1000 hover:opacity-100 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
