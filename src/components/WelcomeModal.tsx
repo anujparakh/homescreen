@@ -32,7 +32,7 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
           <div>
             <h2 class="text-3xl font-bold mb-2">Welcome to The Homescreen!</h2>
             <p class="text-gray-400 text-sm">
-              Your minimalist new tab experience
+              Your minimalistic new tab experience
             </p>
           </div>
 
@@ -57,13 +57,19 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
                   <span class="inline-block w-20 font-mono text-sm bg-gray-800 px-2 py-1 rounded mr-3 flex-shrink-0 text-center">
                     ,
                   </span>
-                  <span>Open settings to customize your experience</span>
+                  <span>
+                    Open settings to customize your experience. Hover over the
+                    top right section to see the settings button.
+                  </span>
                 </li>
                 <li class="flex items-start">
                   <span class="inline-block w-20 font-mono text-sm bg-gray-800 px-2 py-1 rounded mr-3 flex-shrink-0 text-center">
                     Space×2
                   </span>
-                  <span>Double-tap space to skip to next background</span>
+                  <span>
+                    Double-tap space to skip to next background. On a touch
+                    screen, double tap the screen.
+                  </span>
                 </li>
                 <li class="flex items-start">
                   <span class="inline-block w-20 font-mono text-sm bg-gray-800 px-2 py-1 rounded mr-3 flex-shrink-0 text-center">
