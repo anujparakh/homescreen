@@ -79,7 +79,14 @@ export function SettingsPanel({
       >
         {/* Header */}
         <div class="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-          <h2 class="text-xl font-semibold text-white">The Homescreen</h2>
+          <div className="flex flex-row w-auto items-center gap-4">
+            <img
+              src="/favicon.svg"
+              className="ml-0 aspect-square h-10 rounded-lg"
+            />
+
+            <h2 class="text-xl font-semibold text-white">The Homescreen</h2>
+          </div>
           <button
             onClick={onClose}
             class="p-1.5 text-gray-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
@@ -89,7 +96,7 @@ export function SettingsPanel({
           </button>
         </div>
 
-        <div class="flex flex-1 overflow-hidden">
+        <div class="flex flex-1 overflow-hidden rounded-b-xl">
           {/* Tabs Sidebar */}
           <div class="w-48 bg-slate-900 border-r border-slate-700">
             {tabs.map(tab => {
@@ -115,7 +122,7 @@ export function SettingsPanel({
           </div>
 
           {/* Tab Content */}
-          <div class="flex-1 p-6 overflow-y-auto bg-slate-800">
+          <div class="flex-1 p-6 overflow-y-auto bg-slate-800 rounded-b-xl">
             {activeTab === 'clock' && (
               <ClockSettingsTab
                 settings={settings.clock}
