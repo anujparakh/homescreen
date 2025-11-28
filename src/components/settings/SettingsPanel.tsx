@@ -28,9 +28,9 @@ type Tab = {
 }
 
 const tabs: Tab[] = [
+  { id: 'background', label: 'Background', icon: ImageIcon },
   { id: 'clock', label: 'Clock', icon: ClockIcon },
   { id: 'date', label: 'Date', icon: CalendarIcon },
-  { id: 'background', label: 'Background', icon: ImageIcon },
   { id: 'weather', label: 'Weather', icon: CloudIcon },
 ]
 
@@ -41,7 +41,7 @@ export function SettingsPanel({
   onSettingsChange,
   onSkipToNext,
 }: SettingsPanelProps) {
-  const [activeTab, setActiveTab] = useState<TabId>('clock')
+  const [activeTab, setActiveTab] = useState<TabId>('background')
   const panelRef = useRef<HTMLDivElement>(null)
 
   // Handle escape key

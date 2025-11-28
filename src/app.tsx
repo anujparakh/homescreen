@@ -92,6 +92,7 @@ export function App() {
         currentImage={backgroundRotation.currentImage}
         nextImage={backgroundRotation.nextImage}
         isTransitioning={backgroundRotation.isTransitioning}
+        isPreloading={backgroundRotation.isPreloading}
       />
 
       <div class="min-h-screen flex p-8 relative">

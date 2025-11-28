@@ -1,12 +1,14 @@
 import type { BackgroundSettings } from '@/types/settings'
 import type { ImageData } from '@/types/background'
 import { Attribution } from './Attribution'
+import { LoadingSpinner } from './LoadingSpinner'
 
 type BackgroundManagerProps = {
   settings: BackgroundSettings
   currentImage: ImageData | null
   nextImage: ImageData | null
   isTransitioning: boolean
+  isPreloading: boolean
 }
 
 export function BackgroundManager({
@@ -14,6 +16,7 @@ export function BackgroundManager({
   currentImage,
   nextImage,
   isTransitioning,
+  isPreloading,
 }: BackgroundManagerProps) {
 
   if (!settings.enabled) {
@@ -21,6 +24,9 @@ export function BackgroundManager({
       <div class="fixed inset-0 bg-gray-900 -z-10" aria-hidden="true" />
     )
   }
+
+  // Show loading spinner when initially loading the first image
+  const showLoadingSpinner = !currentImage && isPreloading
 
   return (
     <>
@@ -42,6 +48,12 @@ export function BackgroundManager({
         }}
         aria-hidden="true"
       />
+
+      {showLoadingSpinner && (
+        <div class="fixed inset-0 flex items-center justify-center z-10">
+          <LoadingSpinner />
+        </div>
+      )}
 
       {settings.showAttribution && currentImage && (
         <Attribution image={currentImage} />

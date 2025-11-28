@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "preact": "^10.24.3"
+    "preact": "^10.24.3",
+    "wouter": "^3.8.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.2",
