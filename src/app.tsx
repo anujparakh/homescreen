@@ -1,26 +1,24 @@
-import {
-  GearFineIcon,
-  ArrowsOutIcon,
-  ArrowRightIcon,
-} from '@phosphor-icons/react'
-import { useState, useEffect } from 'preact/hooks'
+import { GearFineIcon } from '@phosphor-icons/react'
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { WidgetGroup } from '@/components/widgets/WidgetGroup'
 import { SettingsPanel } from '@/components/settings/SettingsPanel'
 import { BackgroundManager } from '@/components/BackgroundManager'
 import { WelcomeModal } from '@/components/WelcomeModal'
+import { TouchControls } from '@/components/TouchControls'
 import { useSettings } from '@/hooks/useSettings'
 import { useBackgroundRotation } from '@/hooks/useBackgroundRotation'
 import { useAdaptiveColors } from '@/hooks/useAdaptiveColors'
 import { useWelcomeModal } from '@/hooks/useWelcomeModal'
 import { useWeather } from '@/hooks/useWeather'
-import { goFullScreen } from '@/util/common-utils'
 import { cn } from '@/util/cn'
+import { goFullScreen, DOUBLE_TAP_DELAY } from '@/util/common-utils'
 
 export function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [showTouchControls, setShowTouchControls] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
+  const lastTapTimeRef = useRef(0)
   const { settings, setSettings } = useSettings()
   const backgroundRotation = useBackgroundRotation(settings.background)
   const { showWelcome, closeWelcome } = useWelcomeModal()
@@ -31,12 +29,6 @@ export function App() {
   const adaptiveColors = useAdaptiveColors(
     backgroundRotation.currentImage,
     clockPosition
-  )
-
-  // Settings button is always in top-right, so analyze that region
-  const { isDark } = useAdaptiveColors(
-    backgroundRotation.currentImage,
-    'top-right'
   )
 
   // Detect touch device on mount
@@ -92,14 +84,23 @@ export function App() {
       const target = e.target as HTMLElement
       if (target.closest('button')) return
 
+      // Check for double tap
+      const currentTime = Date.now()
+      if (currentTime - lastTapTimeRef.current < DOUBLE_TAP_DELAY) {
+        // Double tap - skip to next background
+        e.preventDefault()
+        backgroundRotation.skipToNext()
+        lastTapTimeRef.current = 0
+      } else {
+        // Single tap - toggle controls
+        lastTapTimeRef.current = currentTime
+      }
       setShowTouchControls(prev => !prev)
     }
 
     document.addEventListener('touchend', handleTouchEnd)
     return () => document.removeEventListener('touchend', handleTouchEnd)
-  }, [isTouchDevice])
-
-  console.log(isHovered)
+  }, [isTouchDevice, backgroundRotation])
 
   return (
     <>
@@ -138,31 +139,10 @@ export function App() {
 
         {/* Touch Controls - Bottom Center */}
         {isTouchDevice && (
-          <div
-            class={cn(
-              'fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-4 transition-all z-50',
-              showTouchControls
-                ? 'opacity-100'
-                : 'opacity-0 pointer-events-none'
-            )}
-          >
-            <div class="flex gap-3 px-4 py-3 rounded-2xl bg-black/40 backdrop-blur-md">
-              <button
-                onClick={() => goFullScreen(document)}
-                class="p-3 rounded-xl bg-white/10 hover:bg-white/20"
-                aria-label="Toggle fullscreen"
-              >
-                <ArrowsOutIcon size={32} class="text-emerald-300" />
-              </button>
-              <button
-                onClick={() => backgroundRotation.skipToNext()}
-                class="p-3 rounded-xl bg-white/10 hover:bg-white/20"
-                aria-label="Next background"
-              >
-                <ArrowRightIcon size={32} class="text-sky-300" />
-              </button>
-            </div>
-          </div>
+          <TouchControls
+            isVisible={showTouchControls}
+            onSkipToNext={backgroundRotation.skipToNext}
+          />
         )}
 
         <WidgetGroup

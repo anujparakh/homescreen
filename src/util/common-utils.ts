@@ -9,3 +9,5 @@ export function goFullScreen(document: Document) {
     })
   }
 }
+
+export const DOUBLE_TAP_DELAY = 300
