@@ -160,7 +160,11 @@ export function App() {
           currentImage={backgroundRotation.currentImage}
         />
 
-        <WelcomeModal isOpen={showWelcome} onClose={closeWelcome} />
+        <WelcomeModal
+          isOpen={showWelcome}
+          onClose={closeWelcome}
+          isTouchDevice={isTouchDevice}
+        />
       </div>
     </>
   )

@@ -3,9 +3,14 @@ import { XIcon } from '@phosphor-icons/react'
 interface WelcomeModalProps {
   isOpen: boolean
   onClose: () => void
+  isTouchDevice?: boolean
 }
 
-export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
+export function WelcomeModal({
+  isOpen,
+  onClose,
+  isTouchDevice = false,
+}: WelcomeModalProps) {
   if (!isOpen) return null
 
   return (
@@ -30,7 +35,9 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
         {/* Content */}
         <div class="space-y-4 sm:space-y-6">
           <div>
-            <h2 class="text-2xl sm:text-3xl font-bold mb-2 pr-8">Welcome to The Homescreen!</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2 pr-8">
+              Welcome to The Homescreen!
+            </h2>
             <p class="text-gray-400 text-sm">
               Your minimalistic new tab experience
             </p>
@@ -52,32 +59,54 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
               <h3 class="text-base sm:text-lg font-semibold mb-2 text-gray-200">
                 How to use
               </h3>
-              <ul class="space-y-2 text-gray-400 text-sm sm:text-base">
-                <li class="flex items-start">
-                  <span class="inline-block w-16 sm:w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
-                    ,
-                  </span>
-                  <span>
-                    Open settings to customize your experience. Hover over the
-                    top right section to see the settings button.
-                  </span>
-                </li>
-                <li class="flex items-start">
-                  <span class="inline-block w-16 sm:w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
-                    Space×2
-                  </span>
-                  <span>
-                    Double-tap space to skip to next background. On a touch
-                    screen, double tap the screen.
-                  </span>
-                </li>
-                <li class="flex items-start">
-                  <span class="inline-block w-16 sm:w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
-                    F
-                  </span>
-                  <span>Toggle fullscreen mode</span>
-                </li>
-              </ul>
+              {isTouchDevice ? (
+                <ul class="space-y-2 text-gray-400 text-sm sm:text-base">
+                  <li class="flex items-start">
+                    <span class="inline-block w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
+                      Tap
+                    </span>
+                    <span>Tap anywhere to show or hide the controls</span>
+                  </li>
+                  <li class="flex items-start">
+                    <span class="inline-block w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
+                      Tap×2
+                    </span>
+                    <span>Double-tap to skip to the next background</span>
+                  </li>
+                  <li class="flex items-start">
+                    <span class="inline-block w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
+                      ⚙️
+                    </span>
+                    <span>
+                      Tap the settings icon to customize your experience
+                    </span>
+                  </li>
+                </ul>
+              ) : (
+                <ul class="space-y-2 text-gray-400 text-sm sm:text-base">
+                  <li class="flex items-start">
+                    <span class="inline-block w-16 sm:w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
+                      ,
+                    </span>
+                    <span>
+                      Open settings to customize your experience. Hover over the
+                      top right section to see the settings button.
+                    </span>
+                  </li>
+                  <li class="flex items-start">
+                    <span class="inline-block w-16 sm:w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
+                      Space×2
+                    </span>
+                    <span>Double-tap space to skip to next background.</span>
+                  </li>
+                  <li class="flex items-start">
+                    <span class="inline-block w-16 sm:w-20 font-mono text-xs sm:text-sm bg-gray-800 px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0 text-center">
+                      F
+                    </span>
+                    <span>Toggle fullscreen mode</span>
+                  </li>
+                </ul>
+              )}
             </div>
           </div>
 
