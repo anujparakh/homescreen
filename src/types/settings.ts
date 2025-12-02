@@ -24,6 +24,7 @@ export type BackgroundSettings = {
   source: 'chromecast' | 'sourced'
   rotationInterval: number
   showAttribution: boolean
+  enableAnimation: boolean
 }
 
 export type WeatherSettings = {

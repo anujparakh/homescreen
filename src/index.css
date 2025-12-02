@@ -7,3 +7,30 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+@keyframes slow-pan {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.1) rotateY(0deg) rotateX(0deg);
+  }
+  15% {
+    transform: translate3d(-6%, 2%, 0) scale(1.12) rotateY(-1deg) rotateX(0.5deg);
+  }
+  30% {
+    transform: translate3d(-10%, -1%, 0) scale(1.15) rotateY(-2deg) rotateX(0deg);
+  }
+  45% {
+    transform: translate3d(-8%, -3%, 0) scale(1.13) rotateY(-1.5deg) rotateX(-0.5deg);
+  }
+  60% {
+    transform: translate3d(6%, -2%, 0) scale(1.18) rotateY(1.5deg) rotateX(0deg);
+  }
+  75% {
+    transform: translate3d(8%, 1%, 0) scale(1.14) rotateY(2deg) rotateX(0.5deg);
+  }
+  90% {
+    transform: translate3d(4%, 2%, 0) scale(1.11) rotateY(1deg) rotateX(0deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.1) rotateY(0deg) rotateX(0deg);
+  }
+}

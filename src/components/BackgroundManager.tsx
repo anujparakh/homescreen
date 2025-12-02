@@ -18,11 +18,8 @@ export function BackgroundManager({
   isTransitioning,
   isPreloading,
 }: BackgroundManagerProps) {
-
   if (!settings.enabled) {
-    return (
-      <div class="fixed inset-0 bg-gray-900 -z-10" aria-hidden="true" />
-    )
+    return <div class="fixed inset-0 bg-gray-900 -z-10" aria-hidden="true" />
   }
 
   // Show loading spinner when initially loading the first image
@@ -30,24 +27,46 @@ export function BackgroundManager({
 
   return (
     <>
+      {/* Current image with panning animation */}
       <div
-        class="fixed inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-[1500ms] ease-in-out -z-10"
-        style={{
-          backgroundImage: currentImage ? `url(${currentImage.url})` : 'none',
-          backgroundColor: currentImage ? 'transparent' : '#111827',
-          opacity: 1,
-        }}
+        class="fixed inset-0 overflow-hidden -z-10"
         aria-hidden="true"
-      />
+        style={{ perspective: '1000px' }}
+      >
+        <div
+          class="absolute w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-[150ms] ease-in-out"
+          style={{
+            backgroundImage: currentImage ? `url(${currentImage.url})` : 'none',
+            backgroundColor: currentImage ? 'transparent' : '#111827',
+            opacity: 1,
+            animation:
+              currentImage && settings.enableAnimation
+                ? 'slow-pan 90s linear infinite'
+                : 'none',
+            transformStyle: 'preserve-3d',
+          }}
+        />
+      </div>
 
+      {/* Next image with panning animation */}
       <div
-        class="fixed inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-[1500ms] ease-in-out -z-10"
-        style={{
-          backgroundImage: nextImage ? `url(${nextImage.url})` : 'none',
-          opacity: isTransitioning && nextImage ? 1 : 0,
-        }}
+        class="fixed inset-0 overflow-hidden -z-10"
         aria-hidden="true"
-      />
+        style={{ perspective: '1000px' }}
+      >
+        <div
+          class="absolute w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-[150ms] ease-in-out"
+          style={{
+            backgroundImage: nextImage ? `url(${nextImage.url})` : 'none',
+            opacity: isTransitioning && nextImage ? 1 : 0,
+            animation:
+              nextImage && settings.enableAnimation
+                ? 'slow-pan 90s linear infinite'
+                : 'none',
+            transformStyle: 'preserve-3d',
+          }}
+        />
+      </div>
 
       {showLoadingSpinner && (
         <div class="fixed inset-0 flex items-center justify-center z-10">
