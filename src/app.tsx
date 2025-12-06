@@ -107,8 +107,6 @@ export function App() {
       <BackgroundManager
         settings={settings.background}
         currentImage={backgroundRotation.currentImage}
-        nextImage={backgroundRotation.nextImage}
-        isTransitioning={backgroundRotation.isTransitioning}
         isPreloading={backgroundRotation.isPreloading}
       />
 
@@ -120,28 +118,33 @@ export function App() {
           onMouseLeave={() => setIsHovered(false)}
         />
 
-        {/* Settings Button */}
-        <button
-          onClick={() => setIsSettingsOpen(true)}
-          class={cn(
-            'fixed top-3 right-3 sm:top-4 sm:right-4 p-4 transition-all duration-300',
-            'group z-50 hover:opacity-100 rounded-2xl bg-black/20 backdrop-blur-md opacity-0',
-            isTouchDevice && showTouchControls && 'opacity-100',
-            !isTouchDevice && isHovered && 'opacity-100'
-          )}
-          aria-label="Open settings"
-        >
-          <GearFineIcon
-            size={32}
-            class={cn('animate-[spin_6s_linear_infinite] ', 'text-slate-300')}
-          />
-        </button>
+        {/* Settings Button - Hidden on touch devices */}
+        {!isTouchDevice && (
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            class={cn(
+              'fixed top-3 right-3 sm:top-4 sm:right-4 p-4 transition-all duration-300',
+              'group z-50 hover:opacity-100 rounded-2xl bg-black/20 backdrop-blur-md opacity-0',
+              isHovered && 'opacity-100'
+            )}
+            aria-label="Open settings"
+          >
+            <GearFineIcon
+              size={32}
+              class={cn(
+                'animate-[spin_6s_linear_infinite] ',
+                'text-slate-300'
+              )}
+            />
+          </button>
+        )}
 
         {/* Touch Controls - Bottom Center */}
         {isTouchDevice && (
           <TouchControls
             isVisible={showTouchControls}
             onSkipToNext={backgroundRotation.skipToNext}
+            onOpenSettings={() => setIsSettingsOpen(true)}
           />
         )}
 

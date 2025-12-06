@@ -6,16 +6,12 @@ import { LoadingSpinner } from './LoadingSpinner'
 type BackgroundManagerProps = {
   settings: BackgroundSettings
   currentImage: ImageData | null
-  nextImage: ImageData | null
-  isTransitioning: boolean
   isPreloading: boolean
 }
 
 export function BackgroundManager({
   settings,
   currentImage,
-  nextImage,
-  isTransitioning,
   isPreloading,
 }: BackgroundManagerProps) {
   if (!settings.enabled) {
@@ -27,40 +23,19 @@ export function BackgroundManager({
 
   return (
     <>
-      {/* Current image with panning animation */}
+      {/* Background image with panning animation */}
       <div
         class="fixed inset-0 overflow-hidden -z-10"
         aria-hidden="true"
         style={{ perspective: '1000px' }}
       >
         <div
-          class="absolute w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-[150ms] ease-in-out"
+          class="absolute w-full h-full bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: currentImage ? `url(${currentImage.url})` : 'none',
             backgroundColor: currentImage ? 'transparent' : '#111827',
-            opacity: 1,
             animation:
               currentImage && settings.enableAnimation
-                ? 'slow-pan 90s linear infinite'
-                : 'none',
-            transformStyle: 'preserve-3d',
-          }}
-        />
-      </div>
-
-      {/* Next image with panning animation */}
-      <div
-        class="fixed inset-0 overflow-hidden -z-10"
-        aria-hidden="true"
-        style={{ perspective: '1000px' }}
-      >
-        <div
-          class="absolute w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-[150ms] ease-in-out"
-          style={{
-            backgroundImage: nextImage ? `url(${nextImage.url})` : 'none',
-            opacity: isTransitioning && nextImage ? 1 : 0,
-            animation:
-              nextImage && settings.enableAnimation
                 ? 'slow-pan 90s linear infinite'
                 : 'none',
             transformStyle: 'preserve-3d',

@@ -1,15 +1,21 @@
-import { ArrowsOutIcon, ArrowRightIcon } from '@phosphor-icons/react'
+import {
+  ArrowsOutIcon,
+  ArrowRightIcon,
+  GearFineIcon,
+} from '@phosphor-icons/react'
 import { cn } from '@/util/cn'
 import { goFullScreen } from '@/util/common-utils'
 
 type TouchControlsProps = {
   isVisible: boolean
   onSkipToNext: () => void
+  onOpenSettings: () => void
 }
 
 export function TouchControls({
   isVisible,
   onSkipToNext,
+  onOpenSettings,
 }: TouchControlsProps) {
   return (
     <div
@@ -32,6 +38,13 @@ export function TouchControls({
           aria-label="Next background"
         >
           <ArrowRightIcon size={32} class="text-sky-300" />
+        </button>
+        <button
+          onClick={onOpenSettings}
+          class="p-3 rounded-xl bg-white/10 hover:bg-white/20"
+          aria-label="Open settings"
+        >
+          <GearFineIcon size={32} class="text-slate-300" />
         </button>
       </div>
     </div>

@@ -91,7 +91,7 @@ export function BackgroundSettingsTab({
 
           {/* Enable Animation */}
           <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
-            <label class="text-gray-200 font-medium">Panning Animation</label>
+            <label class="text-gray-200 font-medium">Animation</label>
             <Toggle
               checked={settings.enableAnimation}
               onChange={checked => updateSetting('enableAnimation', checked)}
