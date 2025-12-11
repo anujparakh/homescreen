@@ -24,7 +24,7 @@ export const DEFAULT_SETTINGS: Settings = {
     source: 'chromecast',
     rotationInterval: 1800000,
     showAttribution: true,
-    enableAnimation: true,
+    enableAnimation: false,
   },
   weather: {
     showWeather: true,
