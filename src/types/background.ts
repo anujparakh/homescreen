@@ -4,6 +4,7 @@ export interface ImageData {
   location: string | undefined
   attribution: string
   source: ImageSource
+  isVideo?: boolean
 }
 
 export interface ChromecastImage {
@@ -18,7 +19,7 @@ export interface ChromecastImage {
   code: string
 }
 
-export type ImageSource = 'chromecast' | 'sourced'
+export type ImageSource = 'chromecast' | 'sourced' | 'apple'
 
 export type ImageResponse = {
   imageUrl: string

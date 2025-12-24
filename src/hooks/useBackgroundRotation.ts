@@ -3,6 +3,7 @@ import type { ImageData } from '@/types/background'
 import type { BackgroundSettings } from '@/types/settings'
 import { fetchChromecastImage } from '@/services/chromecastService'
 import { getNextSourcedImage } from '@/services/sourcedService'
+import { fetchAppleVideo } from '@/services/appleService'
 
 const PRELOAD_TIMEOUT = 30000
 
@@ -10,21 +11,36 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
   const [currentImage, setCurrentImage] = useState<ImageData | null>(null)
   const [isPreloading, setIsPreloading] = useState(false)
 
-  const preloadImage = useCallback((url: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image()
-      img.onload = () => resolve(url)
-      img.onerror = () => reject(new Error('Failed to load image'))
-      img.src = url
+  const preloadMedia = useCallback(
+    (url: string, isVideo: boolean): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        if (isVideo) {
+          const video = document.createElement('video')
+          video.onloadeddata = () => resolve(url)
+          video.onerror = () => reject(new Error('Failed to load video'))
+          video.src = url
+          video.load()
 
-      setTimeout(() => reject(new Error('Load timeout')), PRELOAD_TIMEOUT)
-    })
-  }, [])
+          setTimeout(() => reject(new Error('Load timeout')), PRELOAD_TIMEOUT)
+        } else {
+          const img = new Image()
+          img.onload = () => resolve(url)
+          img.onerror = () => reject(new Error('Failed to load image'))
+          img.src = url
+
+          setTimeout(() => reject(new Error('Load timeout')), PRELOAD_TIMEOUT)
+        }
+      })
+    },
+    []
+  )
 
   const fetchNextImage = useCallback(async (): Promise<ImageData> => {
     try {
       if (settings.source === 'chromecast') {
         return await fetchChromecastImage()
+      } else if (settings.source === 'apple') {
+        return await fetchAppleVideo()
       } else {
         return getNextSourcedImage()
       }
@@ -40,13 +56,13 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
     setIsPreloading(true)
     try {
       const imageData = await fetchNextImage()
-      await preloadImage(imageData.url)
+      await preloadMedia(imageData.url, imageData.isVideo ?? false)
       setCurrentImage(imageData)
     } catch (error) {
       console.error('Failed to preload next image:', error)
       try {
         const fallbackImage = getNextSourcedImage()
-        await preloadImage(fallbackImage.url)
+        await preloadMedia(fallbackImage.url, fallbackImage.isVideo ?? false)
         setCurrentImage(fallbackImage)
       } catch (fallbackError) {
         console.error('Failed to load fallback image:', fallbackError)
@@ -54,7 +70,7 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
     } finally {
       setIsPreloading(false)
     }
-  }, [fetchNextImage, preloadImage, isPreloading])
+  }, [fetchNextImage, preloadMedia, isPreloading])
 
   const skipToNext = useCallback(() => {
     loadNextImage()

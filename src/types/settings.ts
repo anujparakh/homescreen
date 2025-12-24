@@ -21,7 +21,7 @@ export type DateSettings = {
 
 export type BackgroundSettings = {
   enabled: boolean
-  source: 'chromecast' | 'sourced'
+  source: 'chromecast' | 'sourced' | 'apple'
   rotationInterval: number
   showAttribution: boolean
   enableAnimation: boolean

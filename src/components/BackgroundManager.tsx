@@ -23,24 +23,37 @@ export function BackgroundManager({
 
   return (
     <>
-      {/* Background image with panning animation */}
+      {/* Background image or video with panning animation */}
       <div
         class="fixed inset-0 overflow-hidden -z-10"
         aria-hidden="true"
         style={{ perspective: '1000px' }}
       >
-        <div
-          class="absolute w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: currentImage ? `url(${currentImage.url})` : 'none',
-            backgroundColor: currentImage ? 'transparent' : '#111827',
-            animation:
-              currentImage && settings.enableAnimation
-                ? 'slow-pan 90s linear infinite'
+        {currentImage?.isVideo ? (
+          <video
+            class="absolute w-full h-full object-cover"
+            src={currentImage.url}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        ) : (
+          <div
+            class="absolute w-full h-full bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: currentImage
+                ? `url(${currentImage.url})`
                 : 'none',
-            transformStyle: 'preserve-3d',
-          }}
-        />
+              backgroundColor: currentImage ? 'transparent' : '#111827',
+              animation:
+                currentImage && settings.enableAnimation
+                  ? 'slow-pan 90s linear infinite'
+                  : 'none',
+              transformStyle: 'preserve-3d',
+            }}
+          />
+        )}
       </div>
 
       {showLoadingSpinner && (

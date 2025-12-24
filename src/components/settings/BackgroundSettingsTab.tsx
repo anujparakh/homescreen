@@ -53,6 +53,7 @@ export function BackgroundSettingsTab({
               onChange={value => updateSetting('source', value)}
               options={[
                 { value: 'chromecast', label: 'Chromecast' },
+                { value: 'apple', label: 'Apple' },
                 { value: 'sourced', label: 'Local' },
               ]}
               mode="pills"
