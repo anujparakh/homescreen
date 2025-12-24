@@ -9,15 +9,18 @@ export function RandomImage() {
   const [error, setError] = useState<string | null>(null)
   console.log(imageData)
   useEffect(() => {
-    fetchChromecastImage()
-      .then(data => {
-        setImageData(data)
+    const fetchImageData = async () => {
+      try {
+        const imageData = await fetchChromecastImage()
+        setImageData(imageData)
         setLoading(false)
-      })
-      .catch(err => {
-        setError(err.message || 'Failed to load image')
+      } catch (err) {
+        setError('Failed to load image')
         setLoading(false)
-      })
+      }
+    }
+
+    fetchImageData()
   }, [])
 
   if (loading) {

@@ -3,7 +3,7 @@ export interface ImageData {
   photographer: string | undefined
   location: string | undefined
   attribution: string
-  source: 'chromecast' | 'sourced'
+  source: ImageSource
 }
 
 export interface ChromecastImage {
@@ -16,4 +16,12 @@ export interface ChromecastImage {
   second_url: string
   old_filename: string
   code: string
+}
+
+export type ImageSource = 'chromecast' | 'sourced'
+
+export type ImageResponse = {
+  imageUrl: string
+  source: ImageSource
+  metadata?: Record<string, string>
 }
