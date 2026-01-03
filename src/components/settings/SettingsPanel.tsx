@@ -1,17 +1,18 @@
+import { BackgroundSettingsTab } from '@/components/settings/BackgroundSettingsTab'
 import { ClockSettingsTab } from '@/components/settings/ClockSettingsTab'
 import { DateSettingsTab } from '@/components/settings/DateSettingsTab'
-import { BackgroundSettingsTab } from '@/components/settings/BackgroundSettingsTab'
 import { WeatherSettingsTab } from '@/components/settings/WeatherSettingsTab'
-import type { Settings } from '@/types/settings'
+import { WidgetSettingsTab } from '@/components/settings/WidgetSettingsTab'
 import type { ImageData } from '@/types/background'
-import { Icon } from '@phosphor-icons/react'
+import type { Settings } from '@/types/settings'
+import { cn } from '@/util/cn'
+import { Icon, LegoIcon } from '@phosphor-icons/react'
 import { CalendarIcon } from '@phosphor-icons/react/dist/icons/Calendar'
 import { ClockIcon } from '@phosphor-icons/react/dist/icons/Clock'
 import { CloudIcon } from '@phosphor-icons/react/dist/icons/Cloud'
 import { ImageIcon } from '@phosphor-icons/react/dist/icons/Image'
 import { XIcon } from '@phosphor-icons/react/dist/icons/X'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { cn } from '@/util/cn'
 
 type SettingsPanelProps = {
   isOpen: boolean
@@ -22,7 +23,7 @@ type SettingsPanelProps = {
   currentImage?: ImageData | null
 }
 
-type TabId = 'clock' | 'date' | 'background' | 'weather'
+type TabId = 'clock' | 'date' | 'background' | 'weather' | 'widget'
 
 type Tab = {
   id: TabId
@@ -32,6 +33,7 @@ type Tab = {
 
 const tabs: Tab[] = [
   { id: 'background', label: 'Background', icon: ImageIcon },
+  { id: 'widget', label: 'Widget', icon: LegoIcon },
   { id: 'clock', label: 'Clock', icon: ClockIcon },
   { id: 'date', label: 'Date', icon: CalendarIcon },
   { id: 'weather', label: 'Weather', icon: CloudIcon },
@@ -86,7 +88,9 @@ export function SettingsPanel({
               className="ml-0 aspect-square h-8 sm:h-10 rounded-lg"
             />
 
-            <h2 class="text-lg sm:text-xl font-semibold text-white">The Homescreen</h2>
+            <h2 class="text-lg sm:text-xl font-semibold text-white">
+              The Homescreen
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -117,7 +121,9 @@ export function SettingsPanel({
                     size={20}
                     weight={activeTab === tab.id ? 'fill' : 'regular'}
                   />
-                  <span class="text-sm font-medium hidden sm:inline">{tab.label}</span>
+                  <span class="text-sm font-medium hidden sm:inline">
+                    {tab.label}
+                  </span>
                 </button>
               )
             })}
@@ -125,6 +131,14 @@ export function SettingsPanel({
 
           {/* Tab Content */}
           <div class="flex-1 p-4 sm:p-6 overflow-y-auto bg-slate-800 rounded-b-xl">
+            {activeTab === 'widget' && (
+              <WidgetSettingsTab
+                settings={settings.widget}
+                onChange={widgetSettings =>
+                  onSettingsChange({ ...settings, widget: widgetSettings })
+                }
+              />
+            )}
             {activeTab === 'clock' && (
               <ClockSettingsTab
                 settings={settings.clock}

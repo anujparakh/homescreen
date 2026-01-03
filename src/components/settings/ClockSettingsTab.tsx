@@ -1,6 +1,5 @@
 import type { ClockSettings } from '@/types/settings'
 import { Toggle } from '@/components/primitives/Toggle'
-import { Select } from '@/components/primitives/Select'
 
 type ClockSettingsTabProps = {
   settings: ClockSettings
@@ -50,37 +49,6 @@ export function ClockSettingsTab({
           onChange={checked => updateSetting('showSeconds', checked)}
           leftLabel="Off"
           rightLabel="On"
-        />
-      </div>
-
-      {/* Size */}
-      <div class="px-4 py-2 bg-slate-900 rounded-lg border border-slate-700 flex items-center justify-between">
-        <label class="text-gray-200 font-medium">Clock Size</label>
-        <Select
-          value={settings.size}
-          onChange={value => updateSetting('size', value)}
-          options={[
-            { value: 'small', label: 'Small' },
-            { value: 'large', label: 'Large' },
-          ]}
-          mode="pills"
-        />
-      </div>
-
-      {/* Alignment */}
-      <div class="space-y-2 py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
-        <label class="text-gray-200 font-medium">Alignment</label>
-        <Select
-          value={settings.alignment}
-          onChange={value => updateSetting('alignment', value)}
-          options={[
-            { value: 'top-left', label: 'Top Left' },
-            { value: 'top-right', label: 'Top Right' },
-            { value: 'center', label: 'Center' },
-            { value: 'bottom-left', label: 'Bottom Left' },
-            { value: 'bottom-right', label: 'Bottom Right' },
-          ]}
-          mode="pills"
         />
       </div>
     </div>

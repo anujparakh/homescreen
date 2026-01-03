@@ -30,7 +30,7 @@ export function Attribution({ image }: AttributionProps) {
     <div
       class={cn(
         'fixed text-white/60 text-xs sm:text-sm transition-opacity duration-1000 hover:opacity-100',
-        settings.clock.alignment === 'bottom-right'
+        settings.widget.alignment === 'bottom-right'
           ? 'bottom-3 left-3 sm:bottom-4 sm:left-4'
           : 'bottom-3 right-3 sm:bottom-4 sm:right-4',
         isVisible ? 'opacity-100' : 'opacity-0'

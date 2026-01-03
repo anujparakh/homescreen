@@ -24,8 +24,8 @@ export function App() {
   const { showWelcome, closeWelcome } = useWelcomeModal()
   const weatherData = useWeather(settings.weather)
 
-  // Use the clock's alignment position for analyzing the image
-  const clockPosition = settings.clock.alignment
+  // Use the widget's alignment position for analyzing the image
+  const clockPosition = settings.widget.alignment
   const adaptiveColors = useAdaptiveColors(
     backgroundRotation.currentImage,
     clockPosition
@@ -58,8 +58,68 @@ export function App() {
         else setIsSettingsOpen(true)
       }
 
-      // Skip to next background with double-space
-      if (e.key === ' ') {
+      // Cycle widget type with 'w' key
+      if (e.key === 'w' || e.key === 'W') {
+        e.preventDefault()
+        setSettings(prev => {
+          const types: Array<'clock' | 'stopwatch' | 'none'> = ['clock', 'stopwatch', 'none']
+          const currentIndex = types.indexOf(prev.widget.type)
+          const nextIndex = (currentIndex + 1) % types.length
+          const nextType = types[nextIndex]!
+          return {
+            ...prev,
+            widget: { ...prev.widget, type: nextType }
+          }
+        })
+      }
+
+      // Toggle background blur with 'b' key
+      if (e.key === 'b' || e.key === 'B') {
+        e.preventDefault()
+        setSettings(prev => ({
+          ...prev,
+          widget: { ...prev.widget, backgroundBlur: !prev.widget.backgroundBlur }
+        }))
+      }
+
+      // Cycle widget size with 's' key
+      if (e.key === 's' || e.key === 'S') {
+        e.preventDefault()
+        setSettings(prev => {
+          const sizes: Array<'small' | 'medium' | 'large'> = ['small', 'medium', 'large']
+          const currentIndex = sizes.indexOf(prev.widget.size)
+          const nextIndex = (currentIndex + 1) % sizes.length
+          const nextSize = sizes[nextIndex]!
+          return {
+            ...prev,
+            widget: { ...prev.widget, size: nextSize }
+          }
+        })
+      }
+
+      // Cycle widget location/alignment with 'l' key
+      if (e.key === 'l' || e.key === 'L') {
+        e.preventDefault()
+        setSettings(prev => {
+          const alignments: Array<'bottom-left' | 'bottom-right' | 'top-left' | 'top-right' | 'center'> = [
+            'center',
+            'top-left',
+            'top-right',
+            'bottom-left',
+            'bottom-right'
+          ]
+          const currentIndex = alignments.indexOf(prev.widget.alignment)
+          const nextIndex = (currentIndex + 1) % alignments.length
+          const nextAlignment = alignments[nextIndex]!
+          return {
+            ...prev,
+            widget: { ...prev.widget, alignment: nextAlignment }
+          }
+        })
+      }
+
+      // Skip to next background with double-space (only when not using stopwatch)
+      if (e.key === ' ' && settings.widget.type !== 'stopwatch') {
         const currentTime = Date.now()
         if (currentTime - lastSpaceTime < DOUBLE_PRESS_DELAY) {
           e.preventDefault()
@@ -73,7 +133,7 @@ export function App() {
 
     document.addEventListener('keydown', handleKeyPress)
     return () => document.removeEventListener('keydown', handleKeyPress)
-  }, [backgroundRotation])
+  }, [backgroundRotation, isSettingsOpen, settings.widget.type, setSettings])
 
   // Handle tap to toggle touch controls
   useEffect(() => {

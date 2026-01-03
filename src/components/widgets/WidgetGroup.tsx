@@ -12,6 +12,7 @@ import {
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import { cn } from '@/util/cn'
+import { Stopwatch } from './Stopwatch'
 
 interface WidgetGroupProps {
   textColor: string
@@ -35,8 +36,8 @@ export function WidgetGroup({
   weather,
 }: WidgetGroupProps) {
   const { settings } = useSettings()
-  const { showClock, use24HourFormat, showSeconds, size, alignment } =
-    settings.clock
+  const { type, size, alignment, backgroundBlur } = settings.widget
+  const { showClock, use24HourFormat, showSeconds } = settings.clock
   const { showDate, showDayOfWeek, showMonthAndDay, shortMonthName, showYear } =
     settings.date
   const { showWeather, unit, showTemperature, showCondition, showHighLow } =
@@ -52,7 +53,7 @@ export function WidgetGroup({
     return () => clearInterval(interval)
   }, [])
 
-  if (!showClock) {
+  if (type === 'none') {
     return null
   }
 
@@ -66,9 +67,24 @@ export function WidgetGroup({
   const ampm = hours24 >= 12 ? 'PM' : 'AM'
 
   // Size classes - responsive
-  const timeSize = size === 'large' ? 'text-5xl sm:text-7xl md:text-8xl' : 'text-4xl sm:text-5xl'
-  const ampmSize = size === 'large' ? 'text-2xl sm:text-3xl md:text-4xl' : 'text-xl sm:text-2xl'
-  const dateSize = size === 'large' ? 'text-lg sm:text-xl md:text-2xl' : 'text-base sm:text-lg'
+  const timeSize =
+    size === 'large'
+      ? 'text-6xl sm:text-8xl md:text-9xl'
+      : size === 'medium'
+        ? 'text-5xl sm:text-7xl md:text-8xl'
+        : 'text-4xl sm:text-5xl md:text-6xl'
+  const ampmSize =
+    size === 'large'
+      ? 'text-3xl sm:text-4xl md:text-5xl'
+      : size === 'medium'
+        ? 'text-2xl sm:text-3xl md:text-4xl'
+        : 'text-xl sm:text-2xl md:text-3xl'
+  const dateSize =
+    size === 'large'
+      ? 'text-xl sm:text-2xl md:text-3xl'
+      : size === 'medium'
+        ? 'text-lg sm:text-xl md:text-2xl'
+        : 'text-base sm:text-lg md:text-xl'
 
   // Alignment classes
   const alignmentClasses = {
@@ -83,29 +99,50 @@ export function WidgetGroup({
 
   return (
     <div class={cn('w-full flex flex-col gap-4', containerAlignment)}>
-      <div class="backdrop-blur-xs bg-black/30 rounded-xl sm:rounded-2xl px-4 py-4 sm:px-8 sm:py-6 shadow-lg">
+      <div
+        class={cn(
+          'rounded-xl sm:rounded-2xl px-4 py-4 sm:px-8 sm:py-6 ',
+          backgroundBlur && 'backdrop-blur-xs bg-black/30 shadow-lg'
+        )}
+      >
         {/* ------------ */}
         {/* Clock Widget */}
         {/* ------------ */}
-        <div class="flex items-baseline gap-2 sm:gap-3">
-          <div
-            class={cn(timeSize, 'font-bold tracking-wider font-mono', textColor)}
-          >
-            {displayHours}:{minutes}
-            {showSeconds ? `:${seconds}` : ''}
-          </div>
-          {!use24HourFormat && (
-            <div class={cn(ampmSize, 'font-semibold', secondaryTextColor)}>
-              {ampm}
+        {type === 'clock' && showClock && (
+          <div class="flex items-baseline gap-2 sm:gap-3">
+            <div
+              class={cn(
+                timeSize,
+                'font-bold tracking-wider font-mono',
+                textColor
+              )}
+            >
+              {displayHours}:{minutes}
+              {showSeconds ? `:${seconds}` : ''}
             </div>
-          )}
-        </div>
+            {!use24HourFormat && (
+              <div class={cn(ampmSize, 'font-semibold', secondaryTextColor)}>
+                {ampm}
+              </div>
+            )}
+          </div>
+        )}
+        {/* ---------------- */}
+        {/* Stopwatch Widget */}
+        {/* ---------------- */}
+        {type === 'stopwatch' && (
+          <Stopwatch textColor={textColor} size={size} />
+        )}
         {/* ----------- */}
         {/* Date Widget */}
         {/* ----------- */}
         {showDate && (
           <div
-            class={cn(dateSize, secondaryTextColor, 'mt-2 transition-colors duration-500')}
+            class={cn(
+              dateSize,
+              secondaryTextColor,
+              'mt-2 transition-colors duration-500'
+            )}
           >
             {time.toLocaleDateString('en-US', {
               ...(showDayOfWeek && { weekday: 'long' }),
@@ -123,20 +160,33 @@ export function WidgetGroup({
         {showWeather && weather && (
           <div class="mt-2 sm:mt-3 transition-colors duration-500">
             {/* Compact weather info row */}
-            <div class={cn('flex items-center gap-2 sm:gap-3', secondaryTextColor)}>
+            <div
+              class={cn('flex items-center gap-2 sm:gap-3', secondaryTextColor)}
+            >
               {/* Weather Icon */}
               {showCondition &&
                 (() => {
                   const WeatherIcon = WEATHER_ICONS[weather.condition]
-                  const iconSize = size === 'large' ? 28 : 20
-                  return <WeatherIcon size={iconSize} class="sm:w-6 sm:h-6 md:w-8 md:h-8" weight="fill" />
+                  const iconSize =
+                    size === 'large' ? 32 : size === 'medium' ? 28 : 24
+                  return (
+                    <WeatherIcon
+                      size={iconSize}
+                      class="sm:w-6 sm:h-6 md:w-8 md:h-8"
+                      weight="fill"
+                    />
+                  )
                 })()}
 
               {/* Temperature */}
               {showTemperature && (
                 <span
                   class={cn(
-                    size === 'large' ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl',
+                    size === 'large'
+                      ? 'text-3xl sm:text-4xl'
+                      : size === 'medium'
+                        ? 'text-2xl sm:text-3xl'
+                        : 'text-xl sm:text-2xl',
                     'font-semibold'
                   )}
                 >

@@ -9,8 +9,6 @@ export const DEFAULT_SETTINGS: Settings = {
     showClock: true,
     use24HourFormat: false,
     showSeconds: false,
-    size: 'small',
-    alignment: 'center',
   },
   date: {
     showDate: true,
@@ -36,6 +34,12 @@ export const DEFAULT_SETTINGS: Settings = {
     showCondition: true,
     showHighLow: true,
   },
+  widget: {
+    type: 'clock',
+    size: 'small',
+    alignment: 'center',
+    backgroundBlur: true,
+  },
 }
 
 export function loadSettings(): Settings {
@@ -48,6 +52,7 @@ export function loadSettings(): Settings {
         date: { ...DEFAULT_SETTINGS.date, ...parsed.date },
         background: { ...DEFAULT_SETTINGS.background, ...parsed.background },
         weather: { ...DEFAULT_SETTINGS.weather, ...parsed.weather },
+        widget: { ...DEFAULT_SETTINGS.widget, ...parsed.widget },
       }
     }
   } catch (error) {
