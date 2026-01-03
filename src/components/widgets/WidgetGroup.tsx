@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { useSettings } from '@/hooks/useSettings'
 import type { WeatherData, WeatherCondition } from '@/types/weather'
+import type { WidgetSettings } from '@/types/settings'
 import {
   SunIcon,
   CloudSunIcon,
@@ -35,7 +36,7 @@ export function WidgetGroup({
   secondaryTextColor,
   weather,
 }: WidgetGroupProps) {
-  const { settings } = useSettings()
+  const { settings, setSettings } = useSettings()
   const { type, size, alignment, backgroundBlur } = settings.widget
   const { showClock, use24HourFormat, showSeconds } = settings.clock
   const { showDate, showDayOfWeek, showMonthAndDay, shortMonthName, showYear } =
@@ -44,6 +45,10 @@ export function WidgetGroup({
     settings.weather
 
   const [time, setTime] = useState(new Date())
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragPosition, setDragPosition] = useState<{ x: number; y: number } | null>(null)
+  const widgetRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,6 +57,73 @@ export function WidgetGroup({
 
     return () => clearInterval(interval)
   }, [])
+
+  // Drag handlers for touch devices
+  const handleTouchStart = (e: TouchEvent) => {
+    if (!containerRef.current || !widgetRef.current) return
+    const touch = e.touches[0]
+    if (!touch) return
+
+    setIsDragging(true)
+    setDragPosition({ x: touch.clientX, y: touch.clientY })
+  }
+
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!isDragging || !containerRef.current) return
+    const touch = e.touches[0]
+    if (!touch) return
+
+    e.preventDefault()
+    setDragPosition({ x: touch.clientX, y: touch.clientY })
+  }
+
+  const handleTouchEnd = () => {
+    if (!isDragging || !dragPosition || !containerRef.current) return
+
+    // Calculate closest alignment position
+    const container = containerRef.current.getBoundingClientRect()
+    const x = dragPosition.x - container.left
+    const y = dragPosition.y - container.top
+
+    // Determine which third of the screen we're in
+    const horizontalThird = x / container.width
+    const verticalThird = y / container.height
+
+    let newAlignment: WidgetSettings['alignment'] = 'center'
+
+    // Determine alignment based on position
+    if (verticalThird < 0.33) {
+      // Top third
+      if (horizontalThird < 0.33) {
+        newAlignment = 'top-left'
+      } else if (horizontalThird > 0.67) {
+        newAlignment = 'top-right'
+      } else {
+        newAlignment = 'top-left' // Default to top-left for top-center
+      }
+    } else if (verticalThird > 0.67) {
+      // Bottom third
+      if (horizontalThird < 0.33) {
+        newAlignment = 'bottom-left'
+      } else if (horizontalThird > 0.67) {
+        newAlignment = 'bottom-right'
+      } else {
+        newAlignment = 'bottom-left' // Default to bottom-left for bottom-center
+      }
+    } else {
+      // Middle third - center
+      newAlignment = 'center'
+    }
+
+    // Update settings with new alignment
+    setSettings(prev => ({
+      ...prev,
+      widget: { ...prev.widget, alignment: newAlignment }
+    }))
+
+    setIsDragging(false)
+    setDragPosition(null)
+  }
 
   if (type === 'none') {
     return null
@@ -97,12 +169,37 @@ export function WidgetGroup({
 
   const containerAlignment = alignmentClasses[alignment]
 
+  // Calculate widget position when dragging
+  const getWidgetStyle = () => {
+    if (!isDragging || !dragPosition) {
+      return {}
+    }
+
+    return {
+      position: 'fixed' as const,
+      left: `${dragPosition.x}px`,
+      top: `${dragPosition.y}px`,
+      transform: 'translate(-50%, -50%)',
+      transition: 'none',
+      zIndex: 100,
+    }
+  }
+
   return (
-    <div class={cn('w-full flex flex-col gap-4', containerAlignment)}>
+    <div
+      ref={containerRef}
+      class={cn('w-full flex flex-col gap-4', !isDragging && containerAlignment)}
+    >
       <div
+        ref={widgetRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{ ...getWidgetStyle(), touchAction: 'none' }}
         class={cn(
           'rounded-xl sm:rounded-2xl px-4 py-4 sm:px-8 sm:py-6 ',
-          backgroundBlur && 'backdrop-blur-xs bg-black/30 shadow-lg'
+          backgroundBlur && 'backdrop-blur-xs bg-black/30 shadow-lg',
+          isDragging && 'opacity-80 scale-105 transition-transform'
         )}
       >
         {/* ------------ */}
