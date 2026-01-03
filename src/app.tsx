@@ -18,7 +18,9 @@ export function App() {
   const [isHovered, setIsHovered] = useState(false)
   const [showTouchControls, setShowTouchControls] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
+  const [hideCursor, setHideCursor] = useState(false)
   const lastTapTimeRef = useRef(0)
+  const cursorTimeoutRef = useRef<number>()
   const { settings, setSettings } = useSettings()
   const backgroundRotation = useBackgroundRotation(settings.background)
   const { showWelcome, closeWelcome } = useWelcomeModal()
@@ -135,6 +137,35 @@ export function App() {
     return () => document.removeEventListener('keydown', handleKeyPress)
   }, [backgroundRotation, isSettingsOpen, settings.widget.type, setSettings])
 
+  // Hide cursor after 5 seconds of inactivity
+  useEffect(() => {
+    const handleMouseMove = () => {
+      setHideCursor(false)
+
+      // Clear existing timeout
+      if (cursorTimeoutRef.current) {
+        clearTimeout(cursorTimeoutRef.current)
+      }
+
+      // Set new timeout to hide cursor after 5 seconds
+      cursorTimeoutRef.current = window.setTimeout(() => {
+        setHideCursor(true)
+      }, 5000)
+    }
+
+    document.addEventListener('mousemove', handleMouseMove)
+
+    // Initialize timeout on mount
+    handleMouseMove()
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      if (cursorTimeoutRef.current) {
+        clearTimeout(cursorTimeoutRef.current)
+      }
+    }
+  }, [])
+
   // Handle tap to toggle touch controls
   useEffect(() => {
     if (!isTouchDevice) return
@@ -164,6 +195,10 @@ export function App() {
 
   return (
     <>
+      {hideCursor && (
+        <style>{`* { cursor: none !important; }`}</style>
+      )}
+
       <BackgroundManager
         settings={settings.background}
         currentImage={backgroundRotation.currentImage}
