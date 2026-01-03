@@ -18,9 +18,6 @@ export function BackgroundManager({
     return <div class="fixed inset-0 bg-gray-900 -z-10" aria-hidden="true" />
   }
 
-  // Show loading spinner when initially loading the first image
-  const showLoadingSpinner = !currentImage && isPreloading
-
   return (
     <>
       {/* Background image or video with panning animation */}
@@ -56,8 +53,9 @@ export function BackgroundManager({
         )}
       </div>
 
-      {showLoadingSpinner && (
-        <div class="fixed inset-0 flex items-center justify-center z-10">
+      {/* Show loading spinner when loading backgrounds */}
+      {isPreloading && (
+        <div class="fixed inset-0 flex items-center justify-center z-10 bg-black/20 backdrop-blur-sm">
           <LoadingSpinner />
         </div>
       )}

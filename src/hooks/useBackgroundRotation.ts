@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'preact/hooks'
+import { useState, useEffect, useCallback, useRef } from 'preact/hooks'
 import type { ImageData } from '@/types/background'
 import type { BackgroundSettings } from '@/types/settings'
 import { fetchChromecastImage } from '@/services/chromecastService'
@@ -10,6 +10,7 @@ const PRELOAD_TIMEOUT = 30000
 export function useBackgroundRotation(settings: BackgroundSettings) {
   const [currentImage, setCurrentImage] = useState<ImageData | null>(null)
   const [isPreloading, setIsPreloading] = useState(false)
+  const previousSourceRef = useRef<string>(settings.source)
 
   const preloadMedia = useCallback(
     (url: string, isVideo: boolean): Promise<string> => {
@@ -83,6 +84,17 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
       loadNextImage()
     }
   }, [settings.enabled, currentImage, loadNextImage])
+
+  // Reload background when source changes
+  useEffect(() => {
+    if (!settings.enabled || !currentImage) return
+
+    // Check if source actually changed
+    if (previousSourceRef.current !== settings.source) {
+      previousSourceRef.current = settings.source
+      loadNextImage()
+    }
+  }, [settings.source, settings.enabled, currentImage, loadNextImage])
 
   useEffect(() => {
     if (!settings.enabled || !currentImage) return

@@ -61,6 +61,13 @@ export function WidgetGroup({
   // Drag handlers for touch devices
   const handleTouchStart = (e: TouchEvent) => {
     if (!containerRef.current || !widgetRef.current) return
+
+    // Don't start dragging if touching a button or interactive element
+    const target = e.target as HTMLElement
+    if (target.closest('button') || target.tagName === 'BUTTON') {
+      return
+    }
+
     const touch = e.touches[0]
     if (!touch) return
 
