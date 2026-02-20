@@ -1,5 +1,6 @@
-import type { BackgroundSettings } from '@/types/settings'
+import type { BackgroundSettings, SolidColorSettings } from '@/types/settings'
 import type { ImageData } from '@/types/background'
+import { getGradientCSS } from '@/util/gradient'
 import { Toggle } from '@/components/primitives/Toggle'
 import { Select } from '@/components/primitives/Select'
 
@@ -59,6 +60,68 @@ export function BackgroundSettingsTab({
               mode="pills"
             />
           </div>
+
+          {settings.source === 'solid-color' && (
+            <div class="space-y-3 py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
+              <label class="text-gray-200 font-medium block">Gradient Style</label>
+
+              {/* Gradient type */}
+              <Select
+                value={settings.solidColor.gradientType}
+                onChange={value =>
+                  updateSetting('solidColor', {
+                    ...settings.solidColor,
+                    gradientType: value,
+                  })
+                }
+                options={[
+                  { value: 'linear-diagonal', label: 'Diagonal' },
+                  { value: 'linear-vertical', label: 'Vertical' },
+                  { value: 'linear-horizontal', label: 'Horizontal' },
+                  { value: 'radial', label: 'Radial' },
+                ]}
+                mode="pills"
+              />
+
+              {/* Color pickers */}
+              <div class="flex gap-3 pt-1">
+                <div class="flex-1 space-y-1">
+                  <label class="text-gray-400 text-xs">Color A</label>
+                  <input
+                    type="color"
+                    value={settings.solidColor.colorA}
+                    onInput={e =>
+                      updateSetting('solidColor', {
+                        ...settings.solidColor,
+                        colorA: e.currentTarget.value,
+                      })
+                    }
+                    class="w-full h-10 rounded-lg cursor-pointer border border-slate-600 bg-slate-700 p-1"
+                  />
+                </div>
+                <div class="flex-1 space-y-1">
+                  <label class="text-gray-400 text-xs">Color B</label>
+                  <input
+                    type="color"
+                    value={settings.solidColor.colorB}
+                    onInput={e =>
+                      updateSetting('solidColor', {
+                        ...settings.solidColor,
+                        colorB: e.currentTarget.value,
+                      })
+                    }
+                    class="w-full h-10 rounded-lg cursor-pointer border border-slate-600 bg-slate-700 p-1"
+                  />
+                </div>
+              </div>
+
+              {/* Live preview */}
+              <div
+                class="h-16 rounded-lg border border-slate-600 mt-1"
+                style={{ background: getGradientCSS(settings.solidColor) }}
+              />
+            </div>
+          )}
 
           {settings.source !== 'solid-color' && (
             <>

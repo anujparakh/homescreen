@@ -23,6 +23,11 @@ export const DEFAULT_SETTINGS: Settings = {
     rotationInterval: 1800000,
     showAttribution: true,
     enableAnimation: false,
+    solidColor: {
+      colorA: '#111827',
+      colorB: '#1e3a5f',
+      gradientType: 'linear-diagonal',
+    },
   },
   weather: {
     showWeather: true,
