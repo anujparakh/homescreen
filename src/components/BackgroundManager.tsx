@@ -14,8 +14,8 @@ export function BackgroundManager({
   currentImage,
   isPreloading,
 }: BackgroundManagerProps) {
-  if (!settings.enabled) {
-    return <div class="fixed inset-0 bg-gray-900 -z-10" aria-hidden="true" />
+  if (!settings.enabled || settings.source === 'solid-color') {
+    return <div class="fixed inset-0 -z-10" style={{ backgroundColor: '#141414' }} aria-hidden="true" />
   }
 
   return (

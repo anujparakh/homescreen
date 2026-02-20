@@ -78,16 +78,16 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
   }, [loadNextImage])
 
   useEffect(() => {
-    if (!settings.enabled) return
+    if (!settings.enabled || settings.source === 'solid-color') return
 
     if (!currentImage) {
       loadNextImage()
     }
-  }, [settings.enabled, currentImage, loadNextImage])
+  }, [settings.enabled, settings.source, currentImage, loadNextImage])
 
   // Reload background when source changes
   useEffect(() => {
-    if (!settings.enabled || !currentImage) return
+    if (!settings.enabled || !currentImage || settings.source === 'solid-color') return
 
     // Check if source actually changed
     if (previousSourceRef.current !== settings.source) {
@@ -97,14 +97,14 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
   }, [settings.source, settings.enabled, currentImage, loadNextImage])
 
   useEffect(() => {
-    if (!settings.enabled || !currentImage) return
+    if (!settings.enabled || !currentImage || settings.source === 'solid-color') return
 
     const interval = setInterval(() => {
       loadNextImage()
     }, settings.rotationInterval)
 
     return () => clearInterval(interval)
-  }, [settings.enabled, settings.rotationInterval, currentImage, loadNextImage])
+  }, [settings.enabled, settings.rotationInterval, settings.source, currentImage, loadNextImage])
 
   return {
     currentImage,

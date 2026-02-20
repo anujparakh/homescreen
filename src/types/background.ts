@@ -19,7 +19,7 @@ export interface ChromecastImage {
   code: string
 }
 
-export type ImageSource = 'chromecast' | 'sourced' | 'apple'
+export type ImageSource = 'chromecast' | 'sourced' | 'apple' | 'solid-color'
 
 export type ImageResponse = {
   imageUrl: string
