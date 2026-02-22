@@ -24,8 +24,8 @@ export const DEFAULT_SETTINGS: Settings = {
     showAttribution: true,
     enableAnimation: false,
     solidColor: {
-      colorA: '#111827',
-      colorB: '#1e3a5f',
+      colorA: '#10294c',
+      colorB: '#29104c',
       gradientType: 'linear-diagonal',
     },
   },
