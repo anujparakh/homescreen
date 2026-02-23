@@ -1,5 +1,6 @@
 import type { BackgroundSettings } from '@/types/settings'
 import type { ImageData } from '@/types/background'
+import { getGradientCSS } from '@/util/gradient'
 import { Attribution } from './Attribution'
 import { LoadingSpinner } from './LoadingSpinner'
 
@@ -14,8 +15,18 @@ export function BackgroundManager({
   currentImage,
   isPreloading,
 }: BackgroundManagerProps) {
-  if (!settings.enabled || settings.source === 'solid-color') {
+  if (!settings.enabled) {
     return <div class="fixed inset-0 -z-10" style={{ backgroundColor: '#141414' }} aria-hidden="true" />
+  }
+
+  if (settings.source === 'solid-color') {
+    return (
+      <div
+        class="fixed inset-0 -z-10"
+        style={{ background: getGradientCSS(settings.solidColor) }}
+        aria-hidden="true"
+      />
+    )
   }
 
   return (

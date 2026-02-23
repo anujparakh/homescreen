@@ -1,7 +1,16 @@
 import type { BackgroundSettings } from '@/types/settings'
 import type { ImageData } from '@/types/background'
+import { getGradientCSS } from '@/util/gradient'
+import { hexToHue, hueToHex } from '@/util/colorUtils'
 import { Toggle } from '@/components/primitives/Toggle'
 import { Select } from '@/components/primitives/Select'
+
+const HUE_TRACK =
+  'linear-gradient(to right,' +
+  [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360]
+    .map(h => `hsl(${h},70%,40%)`)
+    .join(',') +
+  ')'
 
 type BackgroundSettingsTabProps = {
   settings: BackgroundSettings
@@ -54,11 +63,73 @@ export function BackgroundSettingsTab({
               options={[
                 { value: 'chromecast', label: 'Chromecast' },
                 { value: 'apple', label: 'Apple' },
-                { value: 'solid-color', label: 'Solid Color' },
+                { value: 'solid-color', label: 'Color' },
               ]}
               mode="pills"
             />
           </div>
+
+          {settings.source === 'solid-color' && (
+            <div class="space-y-4 py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
+              {/* Gradient type */}
+              <div class="space-y-2">
+                <label class="text-gray-200 font-medium block">Style</label>
+                <Select
+                  value={settings.solidColor.gradientType}
+                  onChange={value =>
+                    updateSetting('solidColor', {
+                      ...settings.solidColor,
+                      gradientType: value,
+                    })
+                  }
+                  options={[
+                    { value: 'linear-diagonal', label: 'Diagonal' },
+                    { value: 'linear-vertical', label: 'Vertical' },
+                    { value: 'linear-horizontal', label: 'Horizontal' },
+                    { value: 'radial', label: 'Radial' },
+                  ]}
+                  mode="pills"
+                />
+              </div>
+
+              {/* Hue sliders */}
+              {(['A', 'B'] as const).map(key => {
+                const colorKey = `color${key}` as 'colorA' | 'colorB'
+                const hex = settings.solidColor[colorKey]
+                return (
+                  <div key={key} class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <label class="text-gray-400 text-sm">Color {key}</label>
+                      <div
+                        class="w-6 h-6 rounded border border-slate-500"
+                        style={{ backgroundColor: hex }}
+                      />
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="359"
+                      value={hexToHue(hex)}
+                      class="hue-slider w-full"
+                      style={{ background: HUE_TRACK }}
+                      onInput={e =>
+                        updateSetting('solidColor', {
+                          ...settings.solidColor,
+                          [colorKey]: hueToHex(parseInt(e.currentTarget.value)),
+                        })
+                      }
+                    />
+                  </div>
+                )
+              })}
+
+              {/* Live preview */}
+              <div
+                class="h-14 rounded-lg border border-slate-600"
+                style={{ background: getGradientCSS(settings.solidColor) }}
+              />
+            </div>
+          )}
 
           {settings.source !== 'solid-color' && (
             <>

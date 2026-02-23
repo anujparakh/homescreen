@@ -12,12 +12,25 @@ export type DateSettings = {
   showYear: boolean
 }
 
+export type GradientType =
+  | 'linear-diagonal'
+  | 'linear-vertical'
+  | 'linear-horizontal'
+  | 'radial'
+
+export type SolidColorSettings = {
+  colorA: string
+  colorB: string
+  gradientType: GradientType
+}
+
 export type BackgroundSettings = {
   enabled: boolean
   source: 'chromecast' | 'sourced' | 'apple' | 'solid-color'
   rotationInterval: number
   showAttribution: boolean
   enableAnimation: boolean
+  solidColor: SolidColorSettings
 }
 
 export type WeatherSettings = {
