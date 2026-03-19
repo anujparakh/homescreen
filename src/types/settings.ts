@@ -26,7 +26,7 @@ export type SolidColorSettings = {
 
 export type BackgroundSettings = {
   enabled: boolean
-  source: 'chromecast' | 'sourced' | 'apple' | 'solid-color'
+  source: 'chromecast' | 'sourced' | 'apple' | 'solid-color' | 'uw'
   rotationInterval: number
   showAttribution: boolean
   enableAnimation: boolean

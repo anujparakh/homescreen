@@ -64,6 +64,7 @@ export function BackgroundSettingsTab({
                 { value: 'chromecast', label: 'Chromecast' },
                 { value: 'apple', label: 'Apple' },
                 { value: 'solid-color', label: 'Color' },
+                { value: 'uw', label: 'UW' },
               ]}
               mode="pills"
             />
@@ -131,7 +132,7 @@ export function BackgroundSettingsTab({
             </div>
           )}
 
-          {settings.source !== 'solid-color' && (
+          {settings.source !== 'solid-color' && settings.source !== 'uw' && (
             <>
               {/* Rotation Interval */}
               <div class="space-y-2 py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
