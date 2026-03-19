@@ -42,6 +42,14 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
         return await fetchChromecastImage()
       } else if (settings.source === 'apple') {
         return await fetchAppleVideo()
+      } else if (settings.source === 'uw') {
+        return {
+          url: '/backgrounds/uw-background.jpg',
+          attribution: '',
+          source: 'uw',
+          photographer: undefined,
+          location: undefined,
+        }
       } else {
         return getNextSourcedImage()
       }
@@ -87,7 +95,7 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
 
   // Reload background when source changes
   useEffect(() => {
-    if (!settings.enabled || !currentImage || settings.source === 'solid-color') return
+    if (!settings.enabled || !currentImage || settings.source === 'solid-color' || settings.source === 'uw') return
 
     // Check if source actually changed
     if (previousSourceRef.current !== settings.source) {
@@ -97,7 +105,7 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
   }, [settings.source, settings.enabled, currentImage, loadNextImage])
 
   useEffect(() => {
-    if (!settings.enabled || !currentImage || settings.source === 'solid-color') return
+    if (!settings.enabled || !currentImage || settings.source === 'solid-color' || settings.source === 'uw') return
 
     const interval = setInterval(() => {
       loadNextImage()
