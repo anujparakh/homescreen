@@ -28,6 +28,8 @@ export const DEFAULT_SETTINGS: Settings = {
       colorB: '#29104c',
       gradientType: 'linear-diagonal',
     },
+    appleVideoFilename: '',
+    appleVideoUrl: '',
   },
   weather: {
     showWeather: true,

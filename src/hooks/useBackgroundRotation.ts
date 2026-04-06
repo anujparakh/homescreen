@@ -41,6 +41,16 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
       if (settings.source === 'chromecast') {
         return await fetchChromecastImage()
       } else if (settings.source === 'apple') {
+        if (settings.appleVideoUrl) {
+          return {
+            url: settings.appleVideoUrl,
+            source: 'apple' as const,
+            attribution: 'Apple',
+            photographer: undefined,
+            location: undefined,
+            isVideo: true,
+          }
+        }
         return await fetchAppleVideo()
       } else if (settings.source === 'uw') {
         return {
@@ -57,7 +67,7 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
       console.error('Failed to fetch from primary source:', error)
       return getNextSourcedImage()
     }
-  }, [settings.source])
+  }, [settings.source, settings.appleVideoFilename, settings.appleVideoUrl])
 
   const loadNextImage = useCallback(async () => {
     if (isPreloading) return
@@ -93,7 +103,7 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
     }
   }, [settings.enabled, settings.source, currentImage, loadNextImage])
 
-  // Reload background when source changes
+  // Reload background when source or apple filename changes
   useEffect(() => {
     if (!settings.enabled || !currentImage || settings.source === 'solid-color' || settings.source === 'uw') return
 
@@ -104,8 +114,17 @@ export function useBackgroundRotation(settings: BackgroundSettings) {
     }
   }, [settings.source, settings.enabled, currentImage, loadNextImage])
 
+  const previousFilenameRef = useRef<string>(settings.appleVideoFilename)
   useEffect(() => {
-    if (!settings.enabled || !currentImage || settings.source === 'solid-color' || settings.source === 'uw') return
+    if (!settings.enabled || settings.source !== 'apple') return
+    if (previousFilenameRef.current !== settings.appleVideoFilename) {
+      previousFilenameRef.current = settings.appleVideoFilename
+      loadNextImage()
+    }
+  }, [settings.appleVideoFilename, settings.appleVideoUrl, settings.enabled, settings.source, loadNextImage])
+
+  useEffect(() => {
+    if (!settings.enabled || !currentImage || settings.source === 'solid-color' || settings.source === 'uw' || settings.source === 'apple' || settings.rotationInterval === 0) return
 
     const interval = setInterval(() => {
       loadNextImage()

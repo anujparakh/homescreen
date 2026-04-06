@@ -31,6 +31,8 @@ export type BackgroundSettings = {
   showAttribution: boolean
   enableAnimation: boolean
   solidColor: SolidColorSettings
+  appleVideoFilename: string
+  appleVideoUrl: string
 }
 
 export type WeatherSettings = {

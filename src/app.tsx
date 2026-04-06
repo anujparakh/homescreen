@@ -178,9 +178,12 @@ export function App() {
       // Check for double tap
       const currentTime = Date.now()
       if (currentTime - lastTapTimeRef.current < DOUBLE_TAP_DELAY) {
-        // Double tap - skip to next background
         e.preventDefault()
-        backgroundRotation.skipToNext()
+        if (settings.background.source === 'chromecast') {
+          backgroundRotation.skipToNext()
+        } else {
+          goFullScreen(document)
+        }
         lastTapTimeRef.current = 0
       } else {
         // Single tap - toggle controls

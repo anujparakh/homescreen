@@ -1,9 +1,11 @@
+import { useState, useEffect } from 'preact/hooks'
 import type { BackgroundSettings } from '@/types/settings'
 import type { ImageData } from '@/types/background'
 import { getGradientCSS } from '@/util/gradient'
 import { hexToHue, hueToHex } from '@/util/colorUtils'
 import { Toggle } from '@/components/primitives/Toggle'
 import { Select } from '@/components/primitives/Select'
+import { fetchAppleVideoList, type AppleVideoEntry } from '@/services/appleService'
 
 const HUE_TRACK =
   'linear-gradient(to right,' +
@@ -25,6 +27,13 @@ export function BackgroundSettingsTab({
   onSkipToNext,
   currentImage,
 }: BackgroundSettingsTabProps) {
+  const [appleVideoList, setAppleVideoList] = useState<AppleVideoEntry[]>([])
+
+  useEffect(() => {
+    if (settings.source !== 'apple') return
+    fetchAppleVideoList().then(setAppleVideoList).catch(console.error)
+  }, [settings.source])
+
   const updateSetting = <K extends keyof BackgroundSettings>(
     key: K,
     value: BackgroundSettings[K]
@@ -134,24 +143,51 @@ export function BackgroundSettingsTab({
 
           {settings.source !== 'solid-color' && settings.source !== 'uw' && (
             <>
-              {/* Rotation Interval */}
-              <div class="space-y-2 py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
-                <label class="text-gray-200 font-medium">Rotation Interval</label>
-                <Select
-                  value={settings.rotationInterval.toString()}
-                  onChange={value =>
-                    updateSetting('rotationInterval', parseInt(value))
-                  }
-                  options={[
-                    { value: '900000', label: formatInterval(900000) },
-                    { value: '1800000', label: formatInterval(1800000) },
-                    { value: '3600000', label: formatInterval(3600000) },
-                    { value: '7200000', label: formatInterval(7200000) },
-                    { value: '14400000', label: formatInterval(14400000) },
-                  ]}
-                  mode="pills"
-                />
-              </div>
+              {settings.source === 'apple' ? (
+                /* Apple video picker */
+                <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
+                  <label class="text-gray-200 font-medium">Video</label>
+                  <Select
+                    value={settings.appleVideoFilename}
+                    onChange={value => {
+                      const entry = appleVideoList.find(e => e.filename === value)
+                      onChange({
+                        ...settings,
+                        appleVideoFilename: value,
+                        appleVideoUrl: entry?.imageUrl ?? '',
+                      })
+                    }}
+                    options={[
+                      { value: '', label: 'Random' },
+                      ...appleVideoList.map(e => ({
+                        value: e.filename,
+                        label: e.filename.replace(/\.[^.]+$/, '').replace(/-/g, ' '),
+                      })),
+                    ]}
+                    mode="dropdown"
+                  />
+                </div>
+              ) : (
+                /* Rotation Interval */
+                <div class="space-y-2 py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">
+                  <label class="text-gray-200 font-medium">Rotation Interval</label>
+                  <Select
+                    value={settings.rotationInterval.toString()}
+                    onChange={value =>
+                      updateSetting('rotationInterval', parseInt(value))
+                    }
+                    options={[
+                      { value: '0', label: 'None' },
+                      { value: '900000', label: formatInterval(900000) },
+                      { value: '1800000', label: formatInterval(1800000) },
+                      { value: '3600000', label: formatInterval(3600000) },
+                      { value: '7200000', label: formatInterval(7200000) },
+                      { value: '14400000', label: formatInterval(14400000) },
+                    ]}
+                    mode="pills"
+                  />
+                </div>
+              )}
 
               {/* Show Attribution */}
               <div class="flex items-center justify-between py-3 px-4 bg-slate-900 rounded-lg border border-slate-700">

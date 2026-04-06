@@ -45,7 +45,7 @@ export function Select<T extends string>({
     <select
       value={value}
       onChange={e => onChange(e.currentTarget.value as T)}
-      class="bg-slate-700 text-white border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+      class="bg-slate-700 text-white border border-slate-600 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm max-w-48"
     >
       {options.map(option => (
         <option key={option.value} value={option.value}>

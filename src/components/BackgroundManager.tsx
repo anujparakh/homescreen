@@ -1,8 +1,27 @@
+import { useState } from 'preact/hooks'
 import type { BackgroundSettings } from '@/types/settings'
 import type { ImageData } from '@/types/background'
 import { getGradientCSS } from '@/util/gradient'
 import { Attribution } from './Attribution'
 import { LoadingSpinner } from './LoadingSpinner'
+
+function VideoBackground({ url }: { url: string }) {
+  const [error, setError] = useState(false)
+  if (error) {
+    return <div class="absolute w-full h-full" style={{ backgroundColor: '#111827' }} />
+  }
+  return (
+    <video
+      class="absolute w-full h-full object-cover"
+      src={url}
+      autoPlay
+      loop
+      muted
+      playsInline
+      onError={() => setError(true)}
+    />
+  )
+}
 
 type BackgroundManagerProps = {
   settings: BackgroundSettings
@@ -38,14 +57,7 @@ export function BackgroundManager({
         style={{ perspective: '1000px' }}
       >
         {currentImage?.isVideo ? (
-          <video
-            class="absolute w-full h-full object-cover"
-            src={currentImage.url}
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
+          <VideoBackground key={currentImage.url} url={currentImage.url} />
         ) : (
           <div
             class="absolute w-full h-full bg-cover bg-center bg-no-repeat"
